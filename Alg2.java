@@ -4,7 +4,7 @@ class Alg2 {
     static class Alg2State {
         //Entries
         public int a=0, b=0, c=0, d=0;
-        private transitions 
+        private  ;
         //Constructors
         public Alg2State(int num) {setWithStateNumber(num);}
         public Alg2State(int aa, int bb, int cc, int dd) {setWithEntries(aa,bb,cc,dd);}
@@ -47,11 +47,9 @@ class Alg2 {
         }
 
     }
-    static class Alg2Transition {
 
-    }
 
-    Alg2State[] states;
+    Alg2State[] states = new Alg2State[81];
 
     //interchange statenumber and entries
     public static int getStateNumber(int[] entries) {Alg2State temp = new Alg2State(entries);return temp.getStateNumber();}
