@@ -71,10 +71,16 @@ static class Alg2State {
     }
 
     public boolean isFinal() {
-        return a == c && b == d;
+        return (a == c) && (b == d);
     }
     public String toString() {
-
+        StringBuilder s = new StringBuilder();
+        s.append(getStateNumber);
+        s.append(" ");
+        s.append(isFinal() ? 1 : 0);
+        s.append("\n");
+        for (Alg2Transition transition: transitions.keySet()) s.append(transition.toString());
+        return s.toString();
     }
 
 }
