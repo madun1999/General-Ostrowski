@@ -49,9 +49,9 @@ class Alg2State {
         if (0<=bb && bb<=5) b=bb;
         if (0<=cc && cc<=5) c=cc;
         if (0<=dd && dd<=2) d=dd;
-        if (0<=dd && dd<=2) d=ee;
-        if (0<=dd && dd<=2) f=ff;
-        if (0<=dd && dd<=1) g=gg;
+        if (0<=ee && ee<=2) e=ee;
+        if (0<=ff && ff<=2) f=ff;
+        if (0<=gg && gg<=1) g=gg;
         if (valid()) states.put(getStateNumber(),this);
     }
     public void setWithEntries(int[] entries){
