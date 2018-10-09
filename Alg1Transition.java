@@ -1,8 +1,8 @@
-class Alg2Transition {
+class Alg1Transition {
     // Will construct a transition for an automaton
     public int a = 0, b = 0, state = 0;
 
-    public Alg2Transition(int a, int b, int state){
+    public Alg1Transition(int a, int b, int state){
         setTransitions(a, b, state);
     }
 

@@ -1,6 +1,6 @@
 import java.lang.StringBuilder;
 import java.util.Hashtable;
-class Alg2State {
+class Alg1State {
     private static final int TOTAL = 216*27*2;
     private static final int COA = 36*27*2;
     private static final int COB = 6*27*2;
@@ -10,14 +10,14 @@ class Alg2State {
     private static final int COF = 2;
     //Entries and transitions
     public int a=-1, b=-1, c=-1, d=-1, e=-1, f=-1, g=-1;
-    private Hashtable<Integer,Alg2Transition> transitions= new Hashtable<Integer,Alg2Transition>();
+    private Hashtable<Integer,Alg1Transition> transitions= new Hashtable<Integer,Alg1Transition>();
     //All states
-    private static Hashtable<Integer,Alg2State> states= new Hashtable<Integer,Alg2State>();
+    private static Hashtable<Integer,Alg1State> states= new Hashtable<Integer,Alg1State>();
 
     //Constructors
-    public Alg2State(int num) {setWithStateNumber(num);}
-    // public Alg2State(int aa, int bb, int cc, int dd) {setWithEntries(aa,bb,cc,dd);}
-    public Alg2State(int[] entries) {setWithEntries(entries);}
+    public Alg1State(int num) {setWithStateNumber(num);}
+    // public Alg1State(int aa, int bb, int cc, int dd) {setWithEntries(aa,bb,cc,dd);}
+    public Alg1State(int[] entries) {setWithEntries(entries);}
 
     //getters
     public int getStateNumber() {return COA*a+COB*b+COC*c+COD*d+COE*e+COF*f+g;}
@@ -35,11 +35,11 @@ class Alg2State {
             d = num % COC / COD;
             e = num % COD / COE;
             f = num % COE / COF;
-            f = num % COF;
+            g = num % COF;
         }
         if (valid()) states.put(getStateNumber(),this);
        // System.out.println("after: " + a + " " + b + " " + c + " " + d);
-       // System.out.println("number: " + getStateNumber());
+        // System.out.println("number: " + getStateNumber());
     }
     public void setWithEntries(int aa, int bb, int cc, int dd, int ee, int ff, int gg){
         // System.out.println("before2: " + a + " " + b + " " + c + " " + d);
@@ -49,9 +49,9 @@ class Alg2State {
         if (0<=bb && bb<=5) b=bb;
         if (0<=cc && cc<=5) c=cc;
         if (0<=dd && dd<=2) d=dd;
-        if (0<=dd && dd<=2) d=ee;
-        if (0<=dd && dd<=2) f=ff;
-        if (0<=dd && dd<=1) g=gg;
+        if (0<=ee && ee<=2) e=ee;
+        if (0<=ff && ff<=2) f=ff;
+        if (0<=gg && gg<=1) g=gg;
         if (valid()) states.put(getStateNumber(),this);
     }
     public void setWithEntries(int[] entries){
@@ -79,22 +79,27 @@ class Alg2State {
     }
 
     //find and add State
-    public static Alg2State findState(int a) {
+    public static Alg1State findState(int a) {
         return states.get(a);
     }
-    public static void addState(Alg2State s) {
+    public static void addState(Alg1State s) {
         states.put(s.getStateNumber(),s);
     }
     //Verify and add Transition
     public void addTransition(int h, int i) {
         int a1 = a, b1 = b, c1 = c, d1 = d, e1 = e, f1 = f, g1 = g, h1 = h, i1 = i;
         if (b1<2 && c1>2 && (d1+g1) == 0) {b1++;c1-=3;d1=1;g1=1;}  //A1
-        else if (b1<2 && c1>=2 && c1<=4 && (d1+g1)>0) {b1++;c1-=2;d1-=1;g1=0} //A2
-        if (a1==d1) {transitions.put(h*5+i,new Alg2Transition(h,i,COA*b1+COB*c1+COC*h1+COD*e1+COE*f1+COF*i1+g1));}
+        else if (b1<2 && c1>=2 && c1<=4 && (d1+g1)>0) {b1++;c1-=2;d1-=1;g1=0;} //A2
+        if (a1==d1) {transitions.put(h*5+i,new Alg1Transition(h,i,COA*b1+COB*c1+COC*h1+COD*e1+COE*f1+COF*i1+g1));}
     }
 
     public boolean isFinal() {
-        return (a == c) && (b == d);
+        if (g == 1) return false;
+        if (a<2&&b>2&&c==0) {return (a+1 == d) && (b-3 == e) && (f == 0);}
+        if (a<2 && b>=2 && c>0 && c<=2) {return (a+1 == d) && (b-2 == e) && (f == c-1);}
+        if (a<2 && b>=2 && c>2) {return (a+1 == d) && (b-1 == e) && (f == c-3);}
+        if (        b<2 && c>=2) {return (a == d) && (b+1 == e) && (f == c-2);}
+        return (a == d) && (b == e) && (f == c);
     }
     public String toString() {
         // System.out.println(getStateNumber());
@@ -103,7 +108,7 @@ class Alg2State {
         s.append(" ");
         s.append(isFinal() ? 1 : 0);
         s.append("\n");
-        for (Alg2Transition transition: transitions.values()) s.append(transition.toString());
+        for (Alg1Transition transition: transitions.values()) s.append(transition.toString());
         return s.toString();
     }
 

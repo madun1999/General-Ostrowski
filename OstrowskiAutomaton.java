@@ -38,6 +38,6 @@ class OstrowskiAddition {
             Files.createFile(Paths.get("../output/Alg1.txt"));
             Files.write(Paths.get("../output/Alg1.txt"), Alg1.allStatesToString().getBytes());
         }
-
+        catch(Exception e){e.printStackTrace();}
     }
 }
