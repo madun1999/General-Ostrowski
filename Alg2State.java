@@ -70,4 +70,11 @@ static class Alg2State {
         if (b==d) {transistions.put(new Alg2Transition(e1,f1,s));}
     }
 
+    public boolean isFinal() {
+        return a == c && b == d;
+    }
+    public String toString() {
+
+    }
+
 }
