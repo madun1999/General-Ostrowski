@@ -2,21 +2,23 @@ import java.lang.StringBuilder;
 import java.util.Hashtable;
 class Alg2State {
     //Entries and transitions
-    public int a=0, b=0, c=0, d=0;
-    private Hashtable<Integer,Alg2Transition> transitions;
+    public int a=-1, b=-1, c=-1, d=-1;
+    private Hashtable<Integer,Alg2Transition> transitions= new Hashtable<Integer,Alg2Transition>();
     //All states
-    private static Hashtable<Integer,Alg2State> states;
+    private static Hashtable<Integer,Alg2State> states= new Hashtable<Integer,Alg2State>();
 
     //Constructors
-    public Alg2State(int num) {setWithStateNumber(num); if (valid()) states.put(num,this);}
-    public Alg2State(int aa, int bb, int cc, int dd) {setWithEntries(aa,bb,cc,dd); if (valid()) states.put(this.getStateNumber(),this);}
-    public Alg2State(int[] entries) {setWithEntries(entries); if (valid()) states.put(this.getStateNumber(),this);}
+    public Alg2State(int num) {setWithStateNumber(num);}
+    // public Alg2State(int aa, int bb, int cc, int dd) {setWithEntries(aa,bb,cc,dd);}
+    public Alg2State(int[] entries) {setWithEntries(entries);}
+
     //getters
     public int getStateNumber() {return 27*a+9*b+3*c+d;}
     public int[] getEntries() {return new int[] {a,b,c,d};}
 
     //setters
     public void setWithStateNumber(int num) {
+        // System.out.println("before1: " + a + " " + b + " " + c + " " + d);
         states.remove(getStateNumber());
         if (num < 0 || num >80) a=b=c=d=-1;
         else {
@@ -26,8 +28,11 @@ class Alg2State {
             d = num % 3;
         }
         if (valid()) states.put(getStateNumber(),this);
+       // System.out.println("after: " + a + " " + b + " " + c + " " + d);
+       // System.out.println("number: " + getStateNumber());
     }
     public void setWithEntries(int aa, int bb, int cc, int dd){
+        // System.out.println("before2: " + a + " " + b + " " + c + " " + d);
         states.remove(getStateNumber());
         a=b=c=d=-1;
         if (0<=aa && aa<=2) a=aa;
@@ -37,6 +42,7 @@ class Alg2State {
         if (valid()) states.put(getStateNumber(),this);
     }
     public void setWithEntries(int[] entries){
+        // System.out.println("before3: " + a + " " + b + " " + c + " " + d);
         states.remove(getStateNumber());
         a=b=c=d=-1;
         if (entries.length >=1 && 0<=entries[0] && entries[0]<=2) a=entries[0];
@@ -65,15 +71,16 @@ class Alg2State {
     }
     //Verify and add Transition
     public void addTransition(int e, int f) {
-        int e1 = e, f1 = f;
-        if (e<2 && a==2 && b>0) {e++;a=0;b--;} //rule for Alg2
-        if (b==d) {transitions.put(e1*3+f1,new Alg2Transition(e1,f1,27*e+9*a+3*f+c));}
+        int e1 = e, f1 = f, a1 = a, b1 = b, c1 = c, d1 = d;
+        if (e1<2 && a1==2 && b1>0) {e1++;a1=0;b1--;} //rule for Alg2
+        if (b1==d1) {transitions.put(e*3+f,new Alg2Transition(e,f,27*e1+9*a1+3*f1+c1));}
     }
 
     public boolean isFinal() {
         return (a == c) && (b == d);
     }
     public String toString() {
+        // System.out.println(getStateNumber());
         StringBuilder s = new StringBuilder();
         s.append(getStateNumber());
         s.append(" ");
