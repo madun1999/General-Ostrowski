@@ -1,10 +1,13 @@
+import java.lang.StringBuilder;
 class Alg2 {
 
 
-    
 
 
-    Alg2State[] states = new Alg2State[81];
+
+    public static String allStatesToString() {
+        StringBuilder s = new SringBuilder();
+    }
 
     //interchange statenumber and entries
     public static int getStateNumber(int[] entries) {Alg2State temp = new Alg2State(entries);return temp.getStateNumber();}
