@@ -79,7 +79,7 @@ class Alg1State {
     }
 
     //find and add State
-    public static Alg2State findState(int a) {
+    public static Alg1State findState(int a) {
         return states.get(a);
     }
     public static void addState(Alg1State s) {
