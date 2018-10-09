@@ -1,4 +1,4 @@
-class Alg2Transition {
+class Alg1Transition {
     // Will construct a transition for an automaton
     public int a = 0, b = 0, state = 0;
 

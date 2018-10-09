@@ -1,6 +1,6 @@
 import java.lang.StringBuilder;
 import java.util.Hashtable;
-class Alg2State {
+class Alg1State {
     private static final int TOTAL = 216*27*2;
     private static final int COA = 36*27*2;
     private static final int COB = 6*27*2;
@@ -10,9 +10,9 @@ class Alg2State {
     private static final int COF = 2;
     //Entries and transitions
     public int a=-1, b=-1, c=-1, d=-1, e=-1, f=-1, g=-1;
-    private Hashtable<Integer,Alg2Transition> transitions= new Hashtable<Integer,Alg2Transition>();
+    private Hashtable<Integer,Alg1Transition> transitions= new Hashtable<Integer,Alg1Transition>();
     //All states
-    private static Hashtable<Integer,Alg2State> states= new Hashtable<Integer,Alg2State>();
+    private static Hashtable<Integer,Alg1State> states= new Hashtable<Integer,Alg1State>();
 
     //Constructors
     public Alg2State(int num) {setWithStateNumber(num);}
@@ -82,7 +82,7 @@ class Alg2State {
     public static Alg2State findState(int a) {
         return states.get(a);
     }
-    public static void addState(Alg2State s) {
+    public static void addState(Alg1State s) {
         states.put(s.getStateNumber(),s);
     }
     //Verify and add Transition
@@ -90,7 +90,7 @@ class Alg2State {
         int a1 = a, b1 = b, c1 = c, d1 = d, e1 = e, f1 = f, g1 = g, h1 = h, i1 = i;
         if (b1<2 && c1>2 && (d1+g1) == 0) {b1++;c1-=3;d1=1;g1=1;}  //A1
         else if (b1<2 && c1>=2 && c1<=4 && (d1+g1)>0) {b1++;c1-=2;d1-=1;g1=0} //A2
-        if (a1==d1) {transitions.put(h*5+i,new Alg2Transition(h,i,COA*b1+COB*c1+COC*h1+COD*e1+COE*f1+COF*i1+g1));}
+        if (a1==d1) {transitions.put(h*5+i,new Alg1Transition(h,i,COA*b1+COB*c1+COC*h1+COD*e1+COE*f1+COF*i1+g1));}
     }
 
     public boolean isFinal() {
@@ -103,7 +103,7 @@ class Alg2State {
         s.append(" ");
         s.append(isFinal() ? 1 : 0);
         s.append("\n");
-        for (Alg2Transition transition: transitions.values()) s.append(transition.toString());
+        for (Alg1Transition transition: transitions.values()) s.append(transition.toString());
         return s.toString();
     }
 
