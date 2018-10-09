@@ -1,10 +1,11 @@
 import java.lang.StringBuilder;
-static class Alg2State {
+import java.util.Hashtable;
+class Alg2State {
     //Entries and transitions
     public int a=0, b=0, c=0, d=0;
-    private Hashtable<Int,Alg2Transition> transistions;
+    private Hashtable<Integer,Alg2Transition> transitions;
     //All states
-    private static Hashtable<Int,Alg2State> states;
+    private static Hashtable<Integer,Alg2State> states;
 
     //Constructors
     public Alg2State(int num) {setWithStateNumber(num); if (valid()) states.put(num,this);}
@@ -56,17 +57,17 @@ static class Alg2State {
     }
 
     //find and add State
-    public static State findState(int a) {
+    public static Alg2State findState(int a) {
         return states.get(a);
     }
-    public static void addState(State s) {
-        states.put(s.getStateNumber,s);
+    public static void addState(Alg2State s) {
+        states.put(s.getStateNumber(),s);
     }
     //Verify and add Transition
     public void addTransition(int e, int f) {
         int e1 = e, f1 = f;
         if (e<2 && a==2 && b>0) {e++;a=0;b--;} //rule for Alg2
-        if (b==d) {transistions.put(new Alg2Transition(e1,f1,27*e+9*a+3*f+c));}
+        if (b==d) {transitions.put(e1*3+f1,new Alg2Transition(e1,f1,27*e+9*a+3*f+c));}
     }
 
     public boolean isFinal() {
@@ -74,11 +75,11 @@ static class Alg2State {
     }
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(getStateNumber);
+        s.append(getStateNumber());
         s.append(" ");
         s.append(isFinal() ? 1 : 0);
         s.append("\n");
-        for (Alg2Transition transition: transitions.keySet()) s.append(transition.toString());
+        for (Alg2Transition transition: transitions.values()) s.append(transition.toString());
         return s.toString();
     }
 
