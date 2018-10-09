@@ -65,9 +65,7 @@ static class Alg2State {
     public void addTransition(int e, int f) {
         int e1 = e, f1 = f;
         if (e<2 && a==2 && b>0) {e++;a=0;b--;} //rule for Alg2
-        Alg2State s = findState(27*e+9*a+3*f+c);
-        if (s == null) s = new State(27*e+9*a+3*f+c);
-        if (b==d) {transistions.put(new Alg2Transition(e1,f1,s));}
+        if (b==d) {transistions.put(new Alg2Transition(e1,f1,27*e+9*a+3*f+c));}
     }
 
     public boolean isFinal() {
