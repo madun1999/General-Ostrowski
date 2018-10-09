@@ -1,3 +1,4 @@
+import java.lang.StringBuilder;
 static class Alg2State {
     //Entries and transitions
     public int a=0, b=0, c=0, d=0;
