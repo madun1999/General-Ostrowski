@@ -1,7 +1,7 @@
 import java.lang.StringBuilder;
 class Alg0 {
     private static final int MAX = 2;
-    public static String allStatesToString() {
+    public static StringBuilder allStatesToString() {
         StringBuilder s = new StringBuilder();
         s.append("{0,1,2} {0,1,2} {0,1,2,3,4}");
         s.append("\n");
@@ -13,7 +13,7 @@ class Alg0 {
                 s.append("\n");
             }
         }
-        return s.toString();
+        return s;
     }
 
     //interchange statenumber and entries

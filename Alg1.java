@@ -1,7 +1,7 @@
 import java.lang.StringBuilder;
 class Alg1 {
 
-    public static String allStatesToString() {
+    public static StringBuilder allStatesToString() {
         StringBuilder s = new StringBuilder();
         s.append("{0,1,2,3,4} {0,1,2}");
         s.append("\n");
@@ -12,7 +12,7 @@ class Alg1 {
             }
             s.append(temp.toString());
         }
-        return s.toString();
+        return s;
     }
 
     //interchange statenumber and entries
