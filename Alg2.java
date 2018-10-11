@@ -3,6 +3,8 @@ class Alg2 {
 
     public static String allStatesToString() {
         StringBuilder s = new StringBuilder();
+        s.append("{0,1,2} {0,1,2}");
+        s.append("\n");
         for (int i = 0;i<81 ; i++) {
             Alg2State temp = new Alg2State(i);
             for(int j=0;j<9;j++) {

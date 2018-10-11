@@ -3,6 +3,8 @@ class Alg1 {
 
     public static String allStatesToString() {
         StringBuilder s = new StringBuilder();
+        s.append("{0,1,2,3,4} {0,1,2}");
+        s.append("\n");
         for (int i = 0;i<216*27*2 ; i++) {     //6 6 6 3 3 3 2
             Alg1State temp = new Alg1State(i);
             for(int j=0;j<15;j++) {       //5 3
