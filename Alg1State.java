@@ -21,7 +21,7 @@ class Alg1State {
 
     //getters
     public int getStateNumber() {return COA*a+COB*b+COC*c+COD*d+COE*e+COF*f+g;}
-    public int[] getEntries() {return new int[] {a,b,c,d};}
+    public int[] getEntries() {return new int[] {a,b,c,d,e,f,g};}
 
     //setters
     public void setWithStateNumber(int num) {
@@ -88,18 +88,22 @@ class Alg1State {
     //Verify and add Transition
     public void addTransition(int h, int i) {
         int a1 = a, b1 = b, c1 = c, d1 = d, e1 = e, f1 = f, g1 = g, h1 = h, i1 = i;
-        if (b1<2 && c1>2 && (d1+g1) == 0) {b1++;c1-=3;d1=1;g1=1;}  //A1
-        else if (b1<2 && c1>=2 && c1<=4 && (d1+g1)>0) {b1++;c1-=2;d1-=1;g1=0;} //A2
+        if (b1<2 && c1>2 && (h1+g1) == 0) {b1++;c1-=3;h1=1;g1=1;}  //A1
+        else if (b1<2 && c1>=2 && c1<=4 && (h1+g1)>0) {b1++;c1-=2;h1=h1-1+g1;g1=0;} //A2
+        else {h1 = h1+g1;g1 = 0;}
         if (a1==d1) {transitions.put(h*5+i,new Alg1Transition(h,i,COA*b1+COB*c1+COC*h1+COD*e1+COE*f1+COF*i1+g1));}
     }
 
     public boolean isFinal() {
-        if (g == 1) return false;
-        if (a<2&&b>2&&c==0) {return (a+1 == d) && (b-3 == e) && (f == 0);}
-        if (a<2 && b>=2 && c>0 && c<=2) {return (a+1 == d) && (b-2 == e) && (f == c-1);}
-        if (a<2 && b>=2 && c>2) {return (a+1 == d) && (b-1 == e) && (f == c-3);}
-        if (        b<2 && c>=2) {return (a == d) && (b+1 == e) && (f == c-2);}
-        return (a == d) && (b == e) && (f == c);
+        int a1 = a, b1 = b, c1 = c, d1 = d, e1 = e, f1 = f;
+        if (g == 1) {a1--;b1+=3;c1=0;}
+        // if (a<2&&b>2&&c==0) {return (a+1 == d) && (b-3 == e) && (f == 0);}
+        if (a1<2&&b1>2&&c1==0) {return (a1+1 == d1) && (b1-3 == e1) && (f1 == 1);}
+
+        if (a1<2 && b1>=2 && c1>0 && c1<=2) {return (a1+1 == d1) && (b1-2 == e1) && (f1 == c1-1);}
+        if (a1<2 && b1>=2 && c1>2) {return (a1+1 == d1) && (b1-1 == e1) && (f1 == c1-3);}
+        if (        b1<2 && c1>=2) {return (a1 == d1) && (b1+1 == e1) && (f1 == c1-2);}
+        return (a1 == d1) && (b1 == e1) && (f1 == c1);
     }
     public String toString() {
         // System.out.println(getStateNumber());
