@@ -1,0 +1,3 @@
+For putting automata into Walnut follow format below (& denotes space)
+STATE & END STATE={0,1}
+STATE && INPUT -> STATE
