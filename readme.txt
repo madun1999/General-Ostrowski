@@ -1,10 +1,10 @@
 This program produces Algorithms 0,1,2, and 3 for Ostrowski Addition with a=sqrt(2).
-(Alg0(x,y,z) checks if x+y=z digit by digit)
+(ostrowski.Alg0(x,y,z) checks if x+y=z digit by digit)
 
 To use the program, first run command:
 make
 Then, goto folder "/bin" and run command:
-java OstrowskiAddition
+java ostrowski.OstrowskiAddition
 
 After running the program, 4 files representing the the four automata for the four algorithms can be found in the "/output".
 The files is in UTF-16 encoding, which is required by Walnut. Depending on the text editor, the file might look a little bit weird, but it is normal.
