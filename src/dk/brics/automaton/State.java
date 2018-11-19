@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Set;
 
 /** 
- * <tt>Automaton</tt> state. 
+ * <tt>Automaton</tt> state.
  * @author Anders M&oslash;ller &lt;<a href="mailto:amoeller@cs.au.dk">amoeller@cs.au.dk</a>&gt;
  */
 public class State implements Serializable, Comparable<State> {
@@ -46,7 +46,7 @@ public class State implements Serializable, Comparable<State> {
 	
 	boolean accept;
 	Set<Transition> transitions;
-	
+
 	int number;
 	
 	int id;
@@ -59,6 +59,12 @@ public class State implements Serializable, Comparable<State> {
 		resetTransitions();
 		id = next_id++;
 	}
+
+    /**
+     * Getter of number.
+     * @return number.
+     */
+    public int getNumber() { return number; }
 	
 	/** 
 	 * Resets transition set. 

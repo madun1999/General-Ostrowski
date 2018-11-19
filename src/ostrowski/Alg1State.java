@@ -80,7 +80,7 @@ class Alg1State {
         return ""+getStateNumber();
     }
 
-    //find and add State
+    //find and add OstrowskiState
     public static Alg1State findState(int a) {
         return states.get(a);
     }

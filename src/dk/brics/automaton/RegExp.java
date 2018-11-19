@@ -220,7 +220,7 @@ public class RegExp {
 	}
 	
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * Same as <code>toAutomaton(null)</code> (empty automaton map).
 	 */
 	public Automaton toAutomaton() {
@@ -228,7 +228,7 @@ public class RegExp {
 	}
 	
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * Same as <code>toAutomaton(null,minimize)</code> (empty automaton map).
 	 */
 	public Automaton toAutomaton(boolean minimize) {
@@ -236,7 +236,7 @@ public class RegExp {
 	}
 	
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * The constructed automaton is minimal and deterministic and has no 
 	 * transitions to dead states. 
 	 * @param automaton_provider provider of automata for named identifiers
@@ -248,7 +248,7 @@ public class RegExp {
 	}
 		
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * The constructed automaton has no transitions to dead states. 
 	 * @param automaton_provider provider of automata for named identifiers
 	 * @param minimize if set, the automaton is minimized and determinized
@@ -260,7 +260,7 @@ public class RegExp {
 	}
 		
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * The constructed automaton is minimal and deterministic and has no 
 	 * transitions to dead states. 
 	 * @param automata a map from automaton identifiers to automata 
@@ -273,7 +273,7 @@ public class RegExp {
 	}
 	
 	/** 
-	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>. 
+	 * Constructs new <code>Automaton</code> from this <code>RegExp</code>.
 	 * The constructed automaton has no transitions to dead states. 
 	 * @param automata a map from automaton identifiers to automata 
 	 *   (of type <code>Automaton</code>).

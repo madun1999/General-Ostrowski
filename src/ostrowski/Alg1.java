@@ -13,10 +13,10 @@ import java.util.HashMap;
  * 0 1 -> 2
  * This function is written in the base class.
  *
- * To make it working, we need to properly set up the following variables and/or override the following functions in the base ostrowski.Automaton class:
+ * To make it working, we need to properly set up the following variables and/or override the following functions in the base ostrowski.OstrowskiAutomaton class:
  * 1. maxRange
  * 2. states
- * And the following variables and functions for the base State class:
+ * And the following variables and functions for the base OstrowskiState class:
  * 1. encoding
  * 2. isFinal
  * 3. transitions
@@ -26,7 +26,7 @@ import java.util.HashMap;
  *
  * The functions in the ostrowski.Alg1State file is the old code that I used. It is just a reference and I will not use that Class anymore.
  */
-class Alg1 extends Automaton {
+class Alg1 extends OstrowskiAutomaton {
 
     public Alg1() {
         super();

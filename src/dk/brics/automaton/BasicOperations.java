@@ -452,7 +452,7 @@ final public class BasicOperations {
 	/** 
 	 * Determinizes the given automaton using the given set of initial states. 
 	 */
-	static void determinize(Automaton a, Set<State> initialset) {
+	public static void determinize(Automaton a, Set<State> initialset) {
 		char[] points = a.getStartPoints();
 		// subset construction
 		LinkedList<Set<State>> worklist = new LinkedList<Set<State>>();
