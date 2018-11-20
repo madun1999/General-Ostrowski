@@ -1,5 +1,6 @@
 package ostrowski;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Exception;
 import java.io.BufferedWriter;
@@ -21,12 +22,6 @@ class OstrowskiAddition {
                 System.out.println(Alg2.getStateNumber(new int[] {Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4])}));
                 return;
             }
-            if (args[0].equals("-GetEntries1")) {
-                if (args.length != 2) {System.out.println("Need more arguments."); return;}
-                // int[] a = ostrowski.Alg2.getEntries(Integer.valueOf(args[1]));
-                System.out.println(Arrays.toString(Alg1Automaton.getEntries(Integer.valueOf(args[1]))));
-                return;
-            }
             if (args[0].equals("-GetEntries3")) {
                 if (args.length != 2) {System.out.println("Need more arguments."); return;}
                 // int[] a = ostrowski.Alg2.getEntries(Integer.valueOf(args[1]));
@@ -45,9 +40,9 @@ class OstrowskiAddition {
             writer = Files.newBufferedWriter(Paths.get("../output/alg0.txt"), StandardCharsets.UTF_16);
             writer.append(Alg0.allStatesToString(2));
             writer.close();
-            writer = Files.newBufferedWriter(Paths.get("../output/alg1.txt"), StandardCharsets.UTF_16);
-            writer.append(Alg1Automaton.allStatesToString());
-            writer.close();
+//            writer = Files.newBufferedWriter(Paths.get("../output/alg1.txt"), StandardCharsets.UTF_16);
+//            writer.append(new Alg1Automaton(new ArrayList<>().add(2),0));
+//            writer.close();
             writer = Files.newBufferedWriter(Paths.get("../output/alg2.txt"), StandardCharsets.UTF_16);
             writer.append(Alg2.allStatesToString());
             writer.close();
