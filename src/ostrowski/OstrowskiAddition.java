@@ -24,7 +24,7 @@ class OstrowskiAddition {
             if (args[0].equals("-GetEntries1")) {
                 if (args.length != 2) {System.out.println("Need more arguments."); return;}
                 // int[] a = ostrowski.Alg2.getEntries(Integer.valueOf(args[1]));
-                System.out.println(Arrays.toString(Alg1.getEntries(Integer.valueOf(args[1]))));
+                System.out.println(Arrays.toString(Alg1Automaton.getEntries(Integer.valueOf(args[1]))));
                 return;
             }
             if (args[0].equals("-GetEntries3")) {
@@ -46,7 +46,7 @@ class OstrowskiAddition {
             writer.append(Alg0.allStatesToString(2));
             writer.close();
             writer = Files.newBufferedWriter(Paths.get("../output/alg1.txt"), StandardCharsets.UTF_16);
-            writer.append(Alg1.allStatesToString());
+            writer.append(Alg1Automaton.allStatesToString());
             writer.close();
             writer = Files.newBufferedWriter(Paths.get("../output/alg2.txt"), StandardCharsets.UTF_16);
             writer.append(Alg2.allStatesToString());
@@ -68,11 +68,11 @@ class OstrowskiAddition {
             // Files.createFile(Paths.get("../output/ostrowski.Alg3.txt"));
             // Files.write(ostrowski.Alg3.allStatesToString(), Paths.get("../output/ostrowski.Alg3.txt"), StandardCharsets.UTF_16);
             //
-            // if (Files.exists(Paths.get("../output/ostrowski.Alg1.txt"))) {
-            //     Files.delete(Paths.get("../output/ostrowski.Alg1.txt"));
+            // if (Files.exists(Paths.get("../output/ostrowski.Alg1Automaton.txt"))) {
+            //     Files.delete(Paths.get("../output/ostrowski.Alg1Automaton.txt"));
             // }
-            // Files.createFile(Paths.get("../output/ostrowski.Alg1.txt"));
-            // Files.write(ostrowski.Alg1.allStatesToString(), Paths.get("../output/ostrowski.Alg1.txt"), StandardCharsets.UTF_16);
+            // Files.createFile(Paths.get("../output/ostrowski.Alg1Automaton.txt"));
+            // Files.write(ostrowski.Alg1Automaton.allStatesToString(), Paths.get("../output/ostrowski.Alg1Automaton.txt"), StandardCharsets.UTF_16);
             //
             // if (Files.exists(Paths.get("../output/ostrowski.Alg0.txt"))) {
             //     Files.delete(Paths.get("../output/ostrowski.Alg0.txt"));

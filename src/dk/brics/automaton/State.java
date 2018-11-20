@@ -131,7 +131,7 @@ public class State implements Serializable, Comparable<State> {
 				dest.add(t.to);
 	}
 
-	void addEpsilon(State to) {
+	public void addEpsilon(State to) {
 		if (to.accept)
 			accept = true;
 		transitions.addAll(to.transitions);
