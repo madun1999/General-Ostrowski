@@ -5,10 +5,6 @@ import java.util.ArrayList;
 
 class Alg2Automaton extends OstrowskiAutomaton{
 
-    //interchange statenumber and entries
-    public static int getStateNumber(int[] entries) {Alg2State temp = new Alg2State(entries);return temp.getStateNumber();}
-    public static int[] getEntries(int stateNumber) {Alg2State temp = new Alg2State(stateNumber);return temp.getEntries();}
-
     public Alg2Automaton(ArrayList<Integer> r, int nRLength) {
         super(r.stream().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
     }
