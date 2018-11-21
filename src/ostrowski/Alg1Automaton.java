@@ -66,7 +66,7 @@ class Alg1Automaton extends OstrowskiAutomaton {
         int jMax = range[index][1];
         for (int i = 0; i < iMax; i++) {
             for (int j = 0; j < jMax; j++) {
-                addTransition(entries,new int[]{i,j});
+                addTransition(entries, new int[]{i,j}, index);
             }
         }
     }
@@ -85,13 +85,13 @@ class Alg1Automaton extends OstrowskiAutomaton {
         int h1 = h+1 == totalLength ? nonRepeatLength : h+1;
         int h2 = h1+1 == totalLength ? nonRepeatLength : h1+1;
         result += entries[0];
-        
+
         result *= range[h1][0];
         result += entries[1];
 
         result *= range[h][0];
         result += entries[2];
-        
+
         result *= range[h2][1];
         result += entries[3];
 
@@ -100,13 +100,13 @@ class Alg1Automaton extends OstrowskiAutomaton {
 
         result *= range[h][1];
         result += entries[5];
-        
+
         result *= 2;
         result += entries[6];
-        
+
         result *= totalLength;
         result += h;
-        
+
         return result;
     }
 
@@ -133,7 +133,7 @@ class Alg1Automaton extends OstrowskiAutomaton {
     }
 
     @Override
-    int[] findTransitionDestination(int[] entries, int[] transition) {
+    int[] findTransitionDestination(int[] entries, int[] transition, int indexOfTransition) {
         int a = entries[0], b = entries[1], c = entries[2];
         int d = entries[3], e = entries[4], f = entries[5];
         int g = entries[6], h = entries[7];
@@ -148,7 +148,7 @@ class Alg1Automaton extends OstrowskiAutomaton {
         if (b<a3 && c>a2 && i == 0) {b++;c-=a2+1;i=a1-1;g=1;}  //A1
         else if (b<a3 && c>=a2 && c<=2*a2 && i>0) {b++;c-=a2;i=i-1;g=0;} //A2
 
-        if (a==d) return new int[]{b,c,i,e,f,j,g,h2};
+        if (a==d) return new int[]{b,c,i,e,f,j,g,indexOfTransition};
         return new int[0];
     }
 }

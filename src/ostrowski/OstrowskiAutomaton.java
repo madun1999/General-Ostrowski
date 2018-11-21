@@ -83,7 +83,7 @@ abstract class OstrowskiAutomaton extends Automaton {
 
     abstract boolean checkFinal(int[] entries);
 
-    abstract int[] findTransitionDestination(int[] stateEntries, int[] transition);
+    abstract int[] findTransitionDestination(int[] stateEntries, int[] transition, int transitionPositionIndex);
 
     private int inputToEncoding(int[] input) {
         int inputSize = input.length;
@@ -111,9 +111,9 @@ abstract class OstrowskiAutomaton extends Automaton {
         return states.get(encoding);
     }
 
-    public void addTransition(int[] entries, int[] input) {
+    public void addTransition(int[] entries, int[] input, int transitionPositionindex) {
         State state = getStateWithEntries(entries);
-        int[] dest = findTransitionDestination(entries,input);
+        int[] dest = findTransitionDestination(entries,input,transitionPositionindex);
         if (dest.length != 0) {
             State destState = getStateWithEntries(dest);
             Transition transition = new Transition((char) inputToEncoding(input), destState);

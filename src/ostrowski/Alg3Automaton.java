@@ -1,11 +1,10 @@
 package ostrowski;
 
-import java.lang.StringBuilder;
 import java.util.ArrayList;
 
-class Alg2Automaton extends OstrowskiAutomaton{
+class Alg3Automaton extends OstrowskiAutomaton{
 
-    public Alg2Automaton(ArrayList<Integer> r, int nRLength) {
+    public Alg3Automaton(ArrayList<Integer> r, int nRLength) {
         super(r.stream().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
     }
 
@@ -22,7 +21,8 @@ class Alg2Automaton extends OstrowskiAutomaton{
                 for (int b = 0; b < bMax; b++) {
                     for (int c = 0; c < cMax; c++) {
                         for (int d = 0; d < dMax; d++) {
-                            addTransitionsAtIndex(new int[]{a, b, c, d, e}, e2);
+                            if (e!=0) addTransitionsAtIndex(new int[]{a,b,c,d,e}, e-1);
+                            if (nonRepeatLength == e) addTransitionsAtIndex(new int[]{a,b,c,d,e}, totalLength-1);
                         }
                     }
                 }
@@ -42,7 +42,9 @@ class Alg2Automaton extends OstrowskiAutomaton{
 
     @Override
     void addAllInitialStates() {
-        addInitialStateWithEntries(new int[]{0,0,0,0,0});
+        for (int i = 0; i < range.length; i++) {
+            addInitialStateWithEntries(new int[]{0,0,0,0,i});
+        }
     }
 
     @Override
@@ -78,12 +80,11 @@ class Alg2Automaton extends OstrowskiAutomaton{
         int d = entries[3], e = entries[4];
         int f = transition[0], g = transition[1];
         int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
-        int e2 = e1+1 == totalLength ? nonRepeatLength : e1+1;
 
-        int a3 = range[e2][1], a2 = range[e1][1];
+        int a3 = range[e1][1], a2 = range[e][1];
 
-        if (f<a3 && a==a2 && b>0) {f++;a=0;b--;} //rule for ostrowski.Alg2Automaton
-        if (b==d) return new int[]{f,a,g,c,e1};
+        if (a<a3 && b==a2 && f>0) {a++;b=0;f--;} //rule for ostrowski.Alg3Automaton
+        if (a==c) return new int[]{b,f,d,g,index};
         return new int[0];
     }
 }
