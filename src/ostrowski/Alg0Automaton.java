@@ -1,6 +1,7 @@
 package ostrowski;
 
 import java.lang.StringBuilder;
+import java.util.Arrays;
 
 /**
  * This class is a generator for algorithm 0.
@@ -23,13 +24,19 @@ import java.lang.StringBuilder;
  *
  */
 class Alg0Automaton {
+
+    private final int max;
+
+    public Alg0Automaton(int[] r) {
+        max = Arrays.stream(r).max().getAsInt();
+    }
+
     /**
      * Return a StringBuilder representing algorithm 0.
      * Read the class description.
-     * @param max The maximum number the input can be.
      * @return StringBuilder for the state.
      */
-    public static StringBuilder allStatesToString(int max) {
+    public StringBuilder toStringBuilder() {
         StringBuilder s = new StringBuilder();
         for (int j = 0; j < 2; j++) {
             s.append("{");

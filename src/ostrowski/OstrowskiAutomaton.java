@@ -56,6 +56,7 @@ abstract class OstrowskiAutomaton extends Automaton {
         addAllTransitions();
         addAllInitialStates();
         configureInitialStates();
+        setDeterministic(false);
         restoreInvariant();
         states.clear();
         determinize();
@@ -141,7 +142,8 @@ abstract class OstrowskiAutomaton extends Automaton {
         }
         s.append("\n");
 
-        for (State state : states.values()) {
+        Set<State> states1 = getStates();
+        for (State state : states1) {
             s.append(stateToStringBuilder(state));
         }
         return s;

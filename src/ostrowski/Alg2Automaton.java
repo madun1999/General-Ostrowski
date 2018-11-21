@@ -2,11 +2,12 @@ package ostrowski;
 
 import java.lang.StringBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class Alg2Automaton extends OstrowskiAutomaton{
 
-    public Alg2Automaton(ArrayList<Integer> r, int nRLength) {
-        super(r.stream().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
+    public Alg2Automaton(int[] r, int nRLength) {
+        super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
     }
 
     @Override
@@ -18,10 +19,10 @@ class Alg2Automaton extends OstrowskiAutomaton{
             int cMax = range[e][1];
             int bMax = range[e1][0];
             int aMax = range[e][0];
-            for (int a = 0; a < aMax; a++) {
-                for (int b = 0; b < bMax; b++) {
-                    for (int c = 0; c < cMax; c++) {
-                        for (int d = 0; d < dMax; d++) {
+            for (int a = 0; a <= aMax; a++) {
+                for (int b = 0; b <= bMax; b++) {
+                    for (int c = 0; c <= cMax; c++) {
+                        for (int d = 0; d <= dMax; d++) {
                             addTransitionsAtIndex(new int[]{a, b, c, d, e}, e2);
                         }
                     }
@@ -33,8 +34,8 @@ class Alg2Automaton extends OstrowskiAutomaton{
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];
-        for (int i = 0; i < iMax; i++) {
-            for (int j = 0; j < jMax; j++) {
+        for (int i = 0; i <= iMax; i++) {
+            for (int j = 0; j <= jMax; j++) {
                 addTransition(entries,new int[]{i,j},index);
             }
         }

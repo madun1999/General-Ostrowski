@@ -1,6 +1,7 @@
 package ostrowski;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class is a generator for algorithm 1.
@@ -27,8 +28,8 @@ import java.util.ArrayList;
  */
 class Alg1Automaton extends OstrowskiAutomaton {
 
-    public Alg1Automaton(ArrayList<Integer> r, int nRLength) {
-        super(r.stream().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength);
+    public Alg1Automaton(int[] r, int nRLength) {
+        super(Arrays.stream(r).boxed().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength);
     }
     
     @Override
@@ -43,12 +44,12 @@ class Alg1Automaton extends OstrowskiAutomaton {
             int bMax = range[h1][0];
             int aMax = range[h2][0];
             for (int g = 0; g < 2; g++) {
-                for (int a = 0; a < aMax; a++) {
-                    for (int b = 0; b < bMax; b++) {
-                        for (int c = 0; c < cMax; c++) {
-                            for (int d = 0; d < dMax; d++) {
-                                for (int e = 0; e < eMax; e++) {
-                                    for (int f = 0; f < fMax; f++) {
+                for (int a = 0; a <= aMax; a++) {
+                    for (int b = 0; b <= bMax; b++) {
+                        for (int c = 0; c <= cMax; c++) {
+                            for (int d = 0; d <= dMax; d++) {
+                                for (int e = 0; e <= eMax; e++) {
+                                    for (int f = 0; f <= fMax; f++) {
                                         if (h!=0) addTransitionsAtIndex(new int[]{a,b,c,d,e,f,g,h}, h-1);
                                         if (nonRepeatLength == h) addTransitionsAtIndex(new int[]{a,b,c,d,e,f,g,h}, totalLength-1);
                                     }
@@ -64,8 +65,8 @@ class Alg1Automaton extends OstrowskiAutomaton {
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];
-        for (int i = 0; i < iMax; i++) {
-            for (int j = 0; j < jMax; j++) {
+        for (int i = 0; i <= iMax; i++) {
+            for (int j = 0; j <= jMax; j++) {
                 addTransition(entries, new int[]{i,j}, index);
             }
         }
