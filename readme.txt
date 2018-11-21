@@ -1,5 +1,5 @@
 This program produces Algorithms 0,1,2, and 3 for Ostrowski Addition with a=sqrt(2).
-(ostrowski.Alg0(x,y,z) checks if x+y=z digit by digit)
+(ostrowski.Alg0Automaton(x,y,z) checks if x+y=z digit by digit)
 
 To use the program, first run command:
 make

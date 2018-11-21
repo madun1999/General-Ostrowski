@@ -112,10 +112,10 @@ class Alg1Automaton extends OstrowskiAutomaton {
 
     @Override
     boolean checkFinal(int[] entries) {
+        if (entries[7] != 0) return false;
         int a = entries[0], b = entries[1], c = entries[2];
         int d = entries[3], e = entries[4], f = entries[5];
-        int g = entries[6], h = entries[7];
-        if (h != 0) return false;
+        int g = entries[6];
 
         int h1 = 0;
         int h2 = h1+1 == totalLength ? nonRepeatLength : h1+1;
@@ -127,8 +127,8 @@ class Alg1Automaton extends OstrowskiAutomaton {
         if (a<a3&&b>a2&&c==0) {return (a+1 == d) && (b-a2-1 == e) && (f == 1);}
 
         if (a<a3 && b>=a2 && c>0 && c<=a1) {return (a+1 == d) && (b-a2 == e) && (f == c-1);}
-        if (a<a3 && b>=a2 && c>a1) {return (a+1 == d) && (b-a2+1 == e) && (f == c-a1-1);}
-        if (       b<a2 && c>=a1) {return (a == d) && (b+1 == e) && (f == c-a1);}
+        if (a<a3 && b>=a2 && c>a1)         {return (a+1 == d) && (b-a2+1 == e) && (f == c-a1-1);}
+        if (        b<a2  && c>=a1)        {return (a == d) && (b+1 == e) && (f == c-a1);}
         return (a == d) && (b == e) && (f == c);
     }
 
@@ -148,7 +148,7 @@ class Alg1Automaton extends OstrowskiAutomaton {
         if (b<a3 && c>a2 && i == 0) {b++;c-=a2+1;i=a1-1;g=1;}  //A1
         else if (b<a3 && c>=a2 && c<=2*a2 && i>0) {b++;c-=a2;i=i-1;g=0;} //A2
 
-        if (a==d) return new int[]{b,c,i,e,f,j,g};
+        if (a==d) return new int[]{b,c,i,e,f,j,g,h2};
         return new int[0];
     }
 }

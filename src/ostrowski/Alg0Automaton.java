@@ -6,7 +6,7 @@ import java.lang.StringBuilder;
  * This class is a generator for algorithm 0.
  *
  * Requirement:
- * allStatesToString(int max) should return a StringBuilder representing algorithm 0.
+ * toStringBuilder(int max) should return a StringBuilder representing algorithm 0.
  * For example, for rt2, since the max=2, the returned string should look like:
  *
  * {0,1,2} {0,1,2} {0,1,2,3,4}
@@ -22,7 +22,7 @@ import java.lang.StringBuilder;
  * 2 2 -> 0
  *
  */
-class Alg0 {
+class Alg0Automaton {
     /**
      * Return a StringBuilder representing algorithm 0.
      * Read the class description.
