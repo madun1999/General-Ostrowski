@@ -1,3 +1,10 @@
 rt2
 
 2
+
+
+This is the input file. Only the first three lines will be used as input.
+Format:
+First line is the name of the numeration system.
+Second line is the nonRepeated part of the continued fraction, separated by space.
+Third line is the Repeated part of the continued fraction, separated by space, must not be empty.
