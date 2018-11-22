@@ -10,14 +10,34 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+/**
+ * Driver class, calculates automaton.
+ *
+ * Reads input from "input.txt".
+ *
+ * "input.txt" should contain three lines:
+ * First line is the name of the numeration system.
+ * Second line is the nonRepeated part of the continued fraction, separated by space.
+ * Third line is the Repeated part of the continued fraction, separated by space, must not be empty.
+ *
+ * outputs can be found in "output/[name of numeration system]/".
+ * This folder contains six files.
+ * "[name].txt" is the recognition automaton.
+ * "[name]Alg0.txt" - "[name]Alg3.txt" is the three parts of addition automaton.
+ * "[name]AdditionCommand contains the command to be used in Walnut to produce the addition automaton."
+ */
 public class OstrowskiAddition {
+    /**
+     * main method
+     * @param args unused
+     */
     public static void main(String[] args) {
 
         String inputFileName = "input.txt";
-        String name = "rt3_2";
-        int[] a = {2,1};
+        String name = "rt3";
+        int[] a = {1,2};
         int nonRepeatLength = 0;
-        int[] aRepeat = {2,1};
+        int[] aRepeat = {1,2};
         int[] aNRepeat = {};
 
         try (Stream<String> stream = Files.lines(Paths.get(inputFileName))){
@@ -29,6 +49,10 @@ public class OstrowskiAddition {
                 } else {
                     aNRepeat = Arrays.stream(lines[1].split("\\s+")).mapToInt(Integer::parseInt).toArray();
                 }
+                if (lines[2].trim().length() == 0) {
+                    System.out.println("Input Error: Repeated part of the continued fraction must not be empty.");
+                    System.exit(0);
+                }
                 aRepeat = Arrays.stream(lines[2].split("\\s+")).mapToInt(Integer::parseInt).toArray();
                 nonRepeatLength = aNRepeat.length;
                 a = new int[aNRepeat.length + aRepeat.length];
@@ -36,7 +60,7 @@ public class OstrowskiAddition {
                 System.arraycopy(aRepeat, 0, a, aNRepeat.length, aRepeat.length);
                 stream.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -99,6 +123,11 @@ public class OstrowskiAddition {
 
     }
 
+    /**
+     * Helper function to calculate the command for Walnut.
+     * @param name the name of the numeration system.
+     * @return the command for Walnut.
+     */
     private static String buildCommand(String name) {
         return "eval lsd_"
                 + name
@@ -114,7 +143,7 @@ public class OstrowskiAddition {
                 + name
                 + "Alg2(x,y)) & `$"
                 + name
-                +"Alg3(y,c)\":";
+                + "Alg3(y,c)\":";
     }
 
 }

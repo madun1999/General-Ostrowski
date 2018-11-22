@@ -4,34 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * This class is a generator for algorithm 1.
- *
- * Requirement:
- * allStatesToStringBuilder(int max) should return a StringBuilder representing algorithm 1 according to Walnut's implementation.
- * For example, a final state, with encoding 1, with one transition to 2 where 0 1 is the input, would be:
- * 1 1
- * 0 1 -> 2
- * This function is written in the base class.
- *
- * To make it working, we need to properly set up the following variables and/or override the following functions in the base ostrowski.OstrowskiAutomaton class:
- * 1. maxRange
- * 2. states
- * And the following variables and functions for the base OstrowskiState class:
- * 1. encoding
- * 2. isFinal
- * 3. transitions
- * 4. decodeInput() / inputRange (choose one)
- *
- * The other functions in the base class are supplementary, you may use them or not as long as allStatesToStringBuilder(int max) works, i.e. the listed variables and functions are properly set.
- *
- * The functions in the ostrowski.Alg1State file is the old code that I used. It is just a reference and I will not use that Class anymore.
+ * This class is a generator for algorithm 1 of ostrowski addition.
+ * See super class description.
  */
 public class Alg1Automaton extends OstrowskiAutomaton {
 
+    /**
+     * Constructor
+     * @param r the range
+     * @param nRLength the nonRepeated part of the range.
+     */
     public Alg1Automaton(int[] r, int nRLength) {
         super(Arrays.stream(r).boxed().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength);
     }
-    
+
+
     @Override
     void addAllTransitions() {
         for (int h = 0; h < totalLength; h++) {
@@ -61,7 +48,12 @@ public class Alg1Automaton extends OstrowskiAutomaton {
             }
         }
     }
-    
+
+    /**
+     * Helper method that adds all transitions from a source state.
+     * @param entries the entries of the source state
+     * @param index the index of the input
+     */
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];

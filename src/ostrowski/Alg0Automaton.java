@@ -25,10 +25,21 @@ import java.util.Arrays;
  */
 public class Alg0Automaton {
 
+    /**
+     * The max of the input.
+     */
     private final int max;
 
+    /**
+     * Constructor.
+     * @param r the range of the input.
+     */
     public Alg0Automaton(int[] r) {
-        max = Arrays.stream(r).max().getAsInt();
+        max = Arrays.stream(r).max().orElse(0);
+        if (max ==0) {
+            System.out.println("Alg0 Error: input max range is 0.");
+            System.exit(0);
+        }
     }
 
     /**

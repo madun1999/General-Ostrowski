@@ -7,61 +7,83 @@ import dk.brics.automaton.Transition;
 import java.util.*;
 
 /**
- * The automaton base class.
+ * The ostrowski automaton base class.
  *
  * Explanation for Input range:
  * The range of the input might vary based on the position of the input.
  * For example, in recognition automaton for rt3 Ostrowski numeration system, the first input can range from 0 to 1, the second can range from 0 to 2, the third can range from 0 to 1, etc..
  * In this case, the inputRange would be {{1},{2}}, the maxRange would be {2}, and the repeatBeginIndex would be 0.
  * For another example, in algorithm 1 of addition automaton for an Ostrowski numeration system with continuous fraction [5,1,2;3,4] with [3,4] being the repeating part,
- * The input Range would be {{10,5},{2,1},{4,2},{6,3},{8,4}}
- *
+ * Then <code> range={{10,5},{2,1},{4,2},{6,3},{8,4}}</code>, <code>nonRepeatLength = 3</code>, <code>totalLength=5</code>, <code>maxRange = {10,5}</code>.
+ * <code>Alg1Automaton({{10,5},{2,1},{4,2},{6,3},{8,4}},3)</code> will construct an instance of said alg1.
  */
 abstract class OstrowskiAutomaton extends Automaton {
     /**
-     * The range of the input = the max of the input + 1.
+     * The max of each input in different positions.
+     * Least significant digit first.
      * See class description for more detail.
      */
     int[][] range;
 
     /**
-     * The max of range of each input.
+     * The length of the non-repeated part of the range.
      * See class description for more detail.
      */
     int nonRepeatLength;
 
-    int repeatPeriod;
-
+    /**
+     * TotalLength of <code>range</code>
+     * Must be equal to <code>range.length</code>
+     */
     int totalLength;
 
-    int[] maxRange;
+    /**
+     * The maximum range of each input.
+     * See class description for more detail.
+     */
+    private int[] maxRange;
 
     /**
-     * Stores all the states in the automaton.
+     * A temporary dictionary that maps state encoding to states.
+     * Only used during the construction of the automaton.
+     * After invoking <code>restoreInvariant()</code>, this becomes irrelevant.
      * Key is the encoding of the state.
+     * Value is the corresponding state.
      */
     private HashMap<Integer, State> states = new HashMap<>();
 
+    /**
+     * The set of initialStates.
+     * Only used during the construction of the automaton.
+     * After invoking <code>configureInitialStates()</code>, this becomes irrelevant.
+     */
     private Set<State> initialStates = new HashSet<>();
 
     /**
-     * Constructor of ostrowski.OstrowskiAutomaton with size and range of inputs.
-     * @param r size of the input.
-     * @param nRLength range of the input.
+     * Constructor of ostrowski.OstrowskiAutomaton with range of the input and nonRepeated length of the range.
+     * See class description for detail.
+     * @param r range of the input.
+     * @param nRLength nonRepeated length of the range.
      */
     public OstrowskiAutomaton(int[][] r, int nRLength) {
         range = r; nonRepeatLength = nRLength;
-        totalLength = r.length; repeatPeriod = totalLength-nRLength;
+        totalLength = r.length;
         maxRange = OstrowskiCalculator.maxRange(range);
     }
 
-    public void calculateAutomaton() {
+    /**
+     * Calculate the automaton, ready for output.
+     */
+    void calculateAutomaton() {
         addAllTransitions();
+
         addAllInitialStates();
         configureInitialStates();
+
         setDeterministic(false);
 //        setNumbersToEncoding();
 //        setStateNumbers(getStates());
+
         restoreInvariant();
         states.clear();
         determinize();
@@ -69,23 +91,37 @@ abstract class OstrowskiAutomaton extends Automaton {
         setInitialStateNumber();
     }
 
+    /**
+     * Set the number of the initial state to 0.
+     */
     private void setInitialStateNumber() {
         State initialState = getInitialState();
         int initialNumber = initialState.getNumber();
         State exchangeState = getStates().stream()
                 .filter(x -> x.getNumber() == 0)
                 .findFirst()
-                .get();
+                .orElse(null);
+        if (exchangeState == null) {
+            System.out.println("Set InitialState number to 0 Error: No state with number 0");
+            System.exit(0);
+        }
         initialState.setNumber(0);
         exchangeState.setNumber(initialNumber);
     }
 
-    private void setNumbersToEncoding() { //DebugMethod
+    /**
+     * Set the number of the states to encoding of the state.
+     * Method for debugging.
+     */
+    private void setNumbersToEncoding() {
         for (Map.Entry<Integer,State> s: states.entrySet()) {
             s.getValue().setNumber(s.getKey());
         }
     }
 
+    /**
+     * Prepare for determinization.
+     */
     private void configureInitialStates() {
         State initState = new State();
         for(State state:initialStates)
@@ -93,21 +129,52 @@ abstract class OstrowskiAutomaton extends Automaton {
         setInitialState(initState);
         initialStates.clear();
     }
+
     /**
      * Default constructor. Do nothing.
      */
     public OstrowskiAutomaton() {}
 
+    /**
+     * That adds all transitions to the automaton.
+     * Calls <code>addTransition(int[],int[],int)</code>
+     */
     abstract void addAllTransitions();
 
+    /**
+     * Adds all initial states to <code>initialStates</code>.
+     * Calls <code>addInitialStateWithEntries(int[])</code>.
+     */
     abstract void addAllInitialStates();
 
+    /**
+     * Maps entries of a state to corresponding encoding.
+     * @param entries entries of the state
+     * @return encoding of the state.
+     */
     abstract int entriesToEncoding(int[] entries);
 
+    /**
+     * Checks if a state is a final state.
+     * @param entries the entries of the state.
+     * @return true if the state is a final state.
+     */
     abstract boolean checkFinal(int[] entries);
 
+    /**
+     * Decides the destination of the transition given the source state, input, and the index of the input.
+     * @param stateEntries entries of the source state
+     * @param transition the input of the transition
+     * @param transitionPositionIndex the index of the input
+     * @return the entries of the destination state.
+     */
     abstract int[] findTransitionDestination(int[] stateEntries, int[] transition, int transitionPositionIndex);
 
+    /**
+     * Maps input to its corresponding encoding.
+     * @param input the input.
+     * @return the encoding of the input.
+     */
     private int inputToEncoding(int[] input) {
         int inputSize = input.length;
         int sum = 0;
@@ -120,8 +187,8 @@ abstract class OstrowskiAutomaton extends Automaton {
     }
 
     /**
-     * Add a state to the automaton
-     * @param entries the encoding of the state.
+     * Get the state of the corresponding state. If the state doesn't exits, create it and add it to <code>states</code>
+     * @param entries the entries of the state.
      */
     private State getStateWithEntries(int[] entries) {
         int encoding = entriesToEncoding(entries);
@@ -134,6 +201,12 @@ abstract class OstrowskiAutomaton extends Automaton {
         return states.get(encoding);
     }
 
+    /**
+     * Add a transition to the automaton.
+     * @param entries the entries of the source state.
+     * @param input the input.
+     * @param transitionPositionIndex the index of the input.
+     */
     public void addTransition(int[] entries, int[] input, int transitionPositionIndex) {
         State state = getStateWithEntries(entries);
         int[] dest = findTransitionDestination(entries,input,transitionPositionIndex);
@@ -144,12 +217,19 @@ abstract class OstrowskiAutomaton extends Automaton {
         }
     }
 
+    /**
+     * Set a state to be an initial state.
+     * @param entries entries of the initial state
+     */
     void addInitialStateWithEntries(int[] entries) {
         initialStates.add(getStateWithEntries(entries));
     }
 
 
-
+    /**
+     * Outputs a StringBuilder for the automaton corresponding Walnut's implementation.
+     * @return the resulting StringBuilder for the automaton.
+     */
     public StringBuilder toStringBuilder() {
         StringBuilder s = new StringBuilder();
         for (int i:maxRange) {
@@ -175,7 +255,8 @@ abstract class OstrowskiAutomaton extends Automaton {
     }
 
     /**
-     * Outputs a StringBuilder fot the state corresponding Walnut's implementation.
+     * Outputs a StringBuilder for the state corresponding Walnut's implementation.
+     * @param s the state
      * @return the resulting StringBuilder.
      */
     private StringBuilder stateToStringBuilder(State s) {
@@ -187,6 +268,11 @@ abstract class OstrowskiAutomaton extends Automaton {
         return builder;
     }
 
+    /**
+     * Outputs a StringBuilder for the transition corresponding Walnut's implementation.
+     * @param t the transition
+     * @return the resulting StringBuilder for the transition.
+     */
     private StringBuilder transitionToStringBuilder(Transition t) {
         StringBuilder builder = new StringBuilder();
         int num = t.getMax();

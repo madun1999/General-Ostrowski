@@ -3,8 +3,17 @@ package ostrowski;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class is a generator for algorithm 3 of ostrowski addition.
+ * See super class description.
+ */
 public class Alg3Automaton extends OstrowskiAutomaton{
 
+    /**
+     * Constructor
+     * @param r the range
+     * @param nRLength the nonRepeated part of the range.
+     */
     public Alg3Automaton(int[] r, int nRLength) {
         super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
     }
@@ -29,7 +38,11 @@ public class Alg3Automaton extends OstrowskiAutomaton{
             }
         }
     }
-
+    /**
+     * Helper method that adds all transitions from a source state.
+     * @param entries the entries of the source state
+     * @param index the index of the input
+     */
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];
