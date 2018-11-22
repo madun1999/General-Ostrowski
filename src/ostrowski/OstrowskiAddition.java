@@ -1,5 +1,6 @@
 package ostrowski;
 
+import java.io.IOException;
 import java.lang.Exception;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
@@ -7,18 +8,39 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class OstrowskiAddition {
     public static void main(String[] args) {
-        if (args.length>=1){
-            return;
-        }
-        String name = "rt3";
+
+        String inputFileName = "input.txt";
+        String name = "rt3_2";
         int[] a = {2,1};
         int nonRepeatLength = 0;
+        int[] aRepeat = {2,1};
+        int[] aNRepeat = {};
 
-        int[] aRepeat = Arrays.copyOfRange(a,nonRepeatLength,a.length);
-        int[] aNRepeat = Arrays.copyOfRange(a,0,nonRepeatLength);
+        try (Stream<String> stream = Files.lines(Paths.get(inputFileName))){
+            String[] lines = stream.toArray(String[]::new);
+            if (lines.length >= 3) {
+                name = lines[0];
+                if (lines[1].trim().length() == 0){
+                   aNRepeat = new int[0];
+                } else {
+                    aNRepeat = Arrays.stream(lines[1].split("\\s+")).mapToInt(Integer::parseInt).toArray();
+                }
+                aRepeat = Arrays.stream(lines[2].split("\\s+")).mapToInt(Integer::parseInt).toArray();
+                nonRepeatLength = aNRepeat.length;
+                a = new int[aNRepeat.length + aRepeat.length];
+                System.arraycopy(aNRepeat, 0, a, 0, aNRepeat.length);
+                System.arraycopy(aRepeat, 0, a, aNRepeat.length, aRepeat.length);
+                stream.close();
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+
 
         Alg0Automaton alg0 = new Alg0Automaton(a);
         Alg1Automaton alg1 = new Alg1Automaton(a,nonRepeatLength);
@@ -69,7 +91,7 @@ public class OstrowskiAddition {
             writer.close();
 
             writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
-            writer.append(commandBuilder(name));
+            writer.append(buildCommand(name));
             writer.close();
 
         }
@@ -77,7 +99,7 @@ public class OstrowskiAddition {
 
     }
 
-    private static String commandBuilder(String name) {
+    private static String buildCommand(String name) {
         return "eval lsd_"
                 + name
                 + "_addition \"Ey (Ex (Ew $"
@@ -94,4 +116,5 @@ public class OstrowskiAddition {
                 + name
                 +"Alg3(y,c)\":";
     }
+
 }
