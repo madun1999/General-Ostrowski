@@ -6,27 +6,35 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class OstrowskiAddition {
     public static void main(String[] args) {
         if (args.length>=1){
             return;
         }
-        String name = "rt2";
-        int[] a = {2};
+        String name = "rt3";
+        int[] a = {2,1};
         int nonRepeatLength = 0;
+
+        int[] aRepeat = Arrays.copyOfRange(a,nonRepeatLength,a.length);
+        int[] aNRepeat = Arrays.copyOfRange(a,0,nonRepeatLength);
 
         Alg0Automaton alg0 = new Alg0Automaton(a);
         Alg1Automaton alg1 = new Alg1Automaton(a,nonRepeatLength);
         Alg2Automaton alg2 = new Alg2Automaton(a,nonRepeatLength);
         Alg3Automaton alg3 = new Alg3Automaton(a,nonRepeatLength);
+        Recognition rec = new Recognition(aNRepeat,aRepeat);
 
         String directory = "./output/"+name;
         Path path = Paths.get(directory);
-        Path alg0Path = Paths.get(directory+"/alg0.txt");
-        Path alg1Path = Paths.get(directory+"/alg1.txt");
-        Path alg2Path = Paths.get(directory+"/alg2.txt");
-        Path alg3Path = Paths.get(directory+"/alg3.txt");
+        Path alg0Path = Paths.get(directory+"/"+name+"Alg0.txt");
+        Path alg1Path = Paths.get(directory+"/"+name+"Alg1.txt");
+        Path alg2Path = Paths.get(directory+"/"+name+"Alg2.txt");
+        Path alg3Path = Paths.get(directory+"/"+name+"Alg3.txt");
+        Path recognitionPath = Paths.get(directory + "/" + name + ".txt");
+        Path commandPath = Paths.get(directory +"/" + name + "AdditionCommand.txt");
+
         BufferedWriter writer;
         try{
             if (!Files.exists(path)) Files.createDirectory(path);
@@ -34,6 +42,8 @@ public class OstrowskiAddition {
             if (Files.exists(alg1Path)) Files.delete(alg1Path);
             if (Files.exists(alg2Path)) Files.delete(alg2Path);
             if (Files.exists(alg3Path)) Files.delete(alg3Path);
+            if (Files.exists(recognitionPath)) Files.delete(recognitionPath);
+            if (Files.exists(commandPath)) Files.delete(commandPath);
 
             writer = Files.newBufferedWriter(alg0Path, StandardCharsets.UTF_16);
             writer.append(alg0.toStringBuilder());
@@ -54,8 +64,34 @@ public class OstrowskiAddition {
             writer.append(alg3.toStringBuilder());
             writer.close();
 
+            writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
+            writer.append(rec.generate());
+            writer.close();
+
+            writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
+            writer.append(commandBuilder(name));
+            writer.close();
+
         }
         catch(Exception e){e.printStackTrace();}
 
+    }
+
+    private static String commandBuilder(String name) {
+        return "eval lsd_"
+                + name
+                + "_addition \"Ey (Ex (Ew $"
+                + name
+                + "(a) & $"
+                + name
+                + "(b) & $"
+                + name
+                + "Alg0(a,b,w) & `$"
+                + name
+                + "Alg1(w,x)) & $"
+                + name
+                + "Alg2(x,y)) & `$"
+                + name
+                +"Alg3(y,c)\":";
     }
 }

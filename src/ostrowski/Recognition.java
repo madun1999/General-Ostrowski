@@ -1,3 +1,4 @@
+package ostrowski;
 import java.lang.StringBuilder;
 
 public class Recognition {
