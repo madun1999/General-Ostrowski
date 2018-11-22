@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * This class includes helper functions for Ostrowski numeration system.
  */
-class OstrowskiCalculator{
+public class OstrowskiCalculator{
     /**
      * This gives the range for input given continuous fraction of the quadratic number, the size of input, and the multiplier for each input.
      * @param repeated The repeated part of the continuous fraction of the quadratic number.

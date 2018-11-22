@@ -65,7 +65,8 @@ public class State implements Serializable, Comparable<State> {
      * @return number.
      */
     public int getNumber() { return number; }
-	
+
+    public void setNumber(int n) {number = n;}
 	/** 
 	 * Resets transition set. 
 	 */

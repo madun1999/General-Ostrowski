@@ -26,7 +26,7 @@ import java.util.Arrays;
  *
  * The functions in the ostrowski.Alg1State file is the old code that I used. It is just a reference and I will not use that Class anymore.
  */
-class Alg1Automaton extends OstrowskiAutomaton {
+public class Alg1Automaton extends OstrowskiAutomaton {
 
     public Alg1Automaton(int[] r, int nRLength) {
         super(Arrays.stream(r).boxed().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength);
@@ -68,6 +68,7 @@ class Alg1Automaton extends OstrowskiAutomaton {
         for (int i = 0; i <= iMax; i++) {
             for (int j = 0; j <= jMax; j++) {
                 addTransition(entries, new int[]{i,j}, index);
+
             }
         }
     }
@@ -87,19 +88,19 @@ class Alg1Automaton extends OstrowskiAutomaton {
         int h2 = h1+1 == totalLength ? nonRepeatLength : h1+1;
         result += entries[0];
 
-        result *= range[h1][0];
+        result *= range[h1][0]+1;
         result += entries[1];
 
-        result *= range[h][0];
+        result *= range[h][0]+1;
         result += entries[2];
 
-        result *= range[h2][1];
+        result *= range[h2][1]+1;
         result += entries[3];
 
-        result *= range[h1][1];
+        result *= range[h1][1]+1;
         result += entries[4];
 
-        result *= range[h][1];
+        result *= range[h][1]+1;
         result += entries[5];
 
         result *= 2;
@@ -107,7 +108,6 @@ class Alg1Automaton extends OstrowskiAutomaton {
 
         result *= totalLength;
         result += h;
-
         return result;
     }
 
@@ -135,6 +135,10 @@ class Alg1Automaton extends OstrowskiAutomaton {
 
     @Override
     int[] findTransitionDestination(int[] entries, int[] transition, int indexOfTransition) {
+        if (indexOfTransition >= range.length) {
+            System.out.println("findTransitionDestination error: indexOfTransition");
+            System.exit(0);
+        }
         int a = entries[0], b = entries[1], c = entries[2];
         int d = entries[3], e = entries[4], f = entries[5];
         int g = entries[6], h = entries[7];

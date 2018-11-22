@@ -53,16 +53,38 @@ abstract class OstrowskiAutomaton extends Automaton {
         range = r; nonRepeatLength = nRLength;
         totalLength = r.length; repeatPeriod = totalLength-nRLength;
         maxRange = OstrowskiCalculator.maxRange(range);
+    }
+
+    public void calculateAutomaton() {
         addAllTransitions();
         addAllInitialStates();
         configureInitialStates();
         setDeterministic(false);
+//        setNumbersToEncoding();
+//        setStateNumbers(getStates());
         restoreInvariant();
         states.clear();
         determinize();
+        minimize();
+        setInitialStateNumber();
     }
 
+    private void setInitialStateNumber() {
+        State initialState = getInitialState();
+        int initialNumber = initialState.getNumber();
+        State exchangeState = getStates().stream()
+                .filter(x -> x.getNumber() == 0)
+                .findFirst()
+                .get();
+        initialState.setNumber(0);
+        exchangeState.setNumber(initialNumber);
+    }
 
+    private void setNumbersToEncoding() { //DebugMethod
+        for (Map.Entry<Integer,State> s: states.entrySet()) {
+            s.getValue().setNumber(s.getKey());
+        }
+    }
 
     private void configureInitialStates() {
         State initState = new State();
@@ -92,7 +114,7 @@ abstract class OstrowskiAutomaton extends Automaton {
         int coef = 1;
         for (int i = 0; i < inputSize; i++) {
             sum += input[i] * coef;
-            coef *= maxRange[i];
+            coef *= maxRange[i]+1;
         }
         return sum;
     }
@@ -112,9 +134,9 @@ abstract class OstrowskiAutomaton extends Automaton {
         return states.get(encoding);
     }
 
-    public void addTransition(int[] entries, int[] input, int transitionPositionindex) {
+    public void addTransition(int[] entries, int[] input, int transitionPositionIndex) {
         State state = getStateWithEntries(entries);
-        int[] dest = findTransitionDestination(entries,input,transitionPositionindex);
+        int[] dest = findTransitionDestination(entries,input,transitionPositionIndex);
         if (dest.length != 0) {
             State destState = getStateWithEntries(dest);
             Transition transition = new Transition((char) inputToEncoding(input), destState);
@@ -143,7 +165,10 @@ abstract class OstrowskiAutomaton extends Automaton {
         s.append("\n");
 
         Set<State> states1 = getStates();
+        State initial = getInitialState();
+        s.append(stateToStringBuilder(initial));
         for (State state : states1) {
+            if (state.getNumber() == 0) continue;
             s.append(stateToStringBuilder(state));
         }
         return s;
@@ -166,11 +191,11 @@ abstract class OstrowskiAutomaton extends Automaton {
         StringBuilder builder = new StringBuilder();
         int num = t.getMax();
         for (int i: maxRange) {
-            int a = num % i;
+            int a = num % (i+1);
             builder.append(a);
             builder.append(" ");
             num -= a;
-            num /= i;
+            num /= (i+1);
         }
         builder.append("-> ");
         builder.append(t.getDest().getNumber());

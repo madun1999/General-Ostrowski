@@ -3,7 +3,7 @@ package ostrowski;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-class Alg3Automaton extends OstrowskiAutomaton{
+public class Alg3Automaton extends OstrowskiAutomaton{
 
     public Alg3Automaton(int[] r, int nRLength) {
         super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
@@ -54,13 +54,13 @@ class Alg3Automaton extends OstrowskiAutomaton{
         int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
         result += entries[0];
 
-        result *= range[e][0];
+        result *= range[e][0]+1;
         result += entries[1];
 
-        result *= range[e1][0];
+        result *= range[e1][0]+1;
         result += entries[2];
 
-        result *= range[e][1];
+        result *= range[e][1]+1;
         result += entries[3];
 
         result *= totalLength;

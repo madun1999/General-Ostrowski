@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 
-class OstrowskiAddition {
+public class OstrowskiAddition {
     public static void main(String[] args) {
         if (args.length>=1){
             return;
@@ -29,15 +29,22 @@ class OstrowskiAddition {
             writer = Files.newBufferedWriter(Paths.get("./output/alg0.txt"), StandardCharsets.UTF_16);
             writer.append(alg0.toStringBuilder());
             writer.close();
+
             writer = Files.newBufferedWriter(Paths.get("./output/alg1.txt"), StandardCharsets.UTF_16);
+            alg1.calculateAutomaton();
             writer.append(alg1.toStringBuilder());
             writer.close();
+
             writer = Files.newBufferedWriter(Paths.get("./output/alg2.txt"), StandardCharsets.UTF_16);
+            alg2.calculateAutomaton();
             writer.append(alg2.toStringBuilder());
             writer.close();
+
             writer = Files.newBufferedWriter(Paths.get("./output/alg3.txt"), StandardCharsets.UTF_16);
+            alg3.calculateAutomaton();
             writer.append(alg3.toStringBuilder());
             writer.close();
+
         }
         catch(Exception e){e.printStackTrace();}
 

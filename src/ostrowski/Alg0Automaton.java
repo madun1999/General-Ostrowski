@@ -23,7 +23,7 @@ import java.util.Arrays;
  * 2 2 -> 0
  *
  */
-class Alg0Automaton {
+public class Alg0Automaton {
 
     private final int max;
 
