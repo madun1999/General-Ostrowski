@@ -1,5 +1,6 @@
 package ostrowski;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.Exception;
 import java.io.BufferedWriter;
@@ -29,17 +30,20 @@ import java.util.stream.Stream;
 public class OstrowskiAddition {
     /**
      * main method
-     * @param args unused
+     * @param args First argument is the name of the input file. Default "input.txt".
      */
     public static void main(String[] args) {
-
         String inputFileName = "input.txt";
+        if (args.length == 0) System.out.println("No input file name given.");
+        else inputFileName = args[0].trim();
+
         String name = "rt3";
         int[] a = {1,2};
         int nonRepeatLength = 0;
         int[] aRepeat = {1,2};
         int[] aNRepeat = {};
 
+        System.out.println("Try reading input from " + inputFileName + " ...");
         try (Stream<String> stream = Files.lines(Paths.get(inputFileName))){
             String[] lines = stream.toArray(String[]::new);
             if (lines.length >= 3) {
@@ -61,7 +65,8 @@ public class OstrowskiAddition {
                 stream.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("File " + inputFileName + " is not found. Shutting down...");
+            System.exit(1);
         }
 
 
@@ -72,7 +77,7 @@ public class OstrowskiAddition {
         Alg3Automaton alg3 = new Alg3Automaton(a,nonRepeatLength);
         Recognition rec = new Recognition(aNRepeat,aRepeat);
 
-        String directory = "./output/"+name;
+        String directory = System.getProperty("user.dir") + "/output/" + name;
         Path path = Paths.get(directory);
         Path alg0Path = Paths.get(directory+"/"+name+"Alg0.txt");
         Path alg1Path = Paths.get(directory+"/"+name+"Alg1.txt");
@@ -94,29 +99,35 @@ public class OstrowskiAddition {
             writer = Files.newBufferedWriter(alg0Path, StandardCharsets.UTF_16);
             writer.append(alg0.toStringBuilder());
             writer.close();
+            System.out.println("Alg0 written to "+alg0Path.toString());
 
             writer = Files.newBufferedWriter(alg1Path, StandardCharsets.UTF_16);
             alg1.calculateAutomaton();
             writer.append(alg1.toStringBuilder());
             writer.close();
+            System.out.println("Alg1 written to "+alg1Path.toString());
 
             writer = Files.newBufferedWriter(alg2Path, StandardCharsets.UTF_16);
             alg2.calculateAutomaton();
             writer.append(alg2.toStringBuilder());
             writer.close();
+            System.out.println("Alg2 written to "+alg2Path.toString());
 
             writer = Files.newBufferedWriter(alg3Path, StandardCharsets.UTF_16);
             alg3.calculateAutomaton();
             writer.append(alg3.toStringBuilder());
             writer.close();
+            System.out.println("Alg3 written to "+alg3Path.toString());
 
             writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
             writer.append(rec.generate());
             writer.close();
+            System.out.println("Recognition written to "+recognitionPath.toString());
 
             writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
             writer.append(buildCommand(name));
             writer.close();
+            System.out.println("Walnut command written to "+commandPath.toString());
 
         }
         catch(Exception e){e.printStackTrace();}

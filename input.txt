@@ -1,6 +1,6 @@
-rt3
-
-1 2
+rt3_2
+1
+6 2
 
 
 This is the input file. Only the first three lines will be used as input.
