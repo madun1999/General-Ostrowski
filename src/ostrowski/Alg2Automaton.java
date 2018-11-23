@@ -55,7 +55,10 @@ public class Alg2Automaton extends OstrowskiAutomaton{
 
     @Override
     void addAllInitialStates() {
-        addInitialStateWithEntries(new int[]{0,0,0,0,0});
+        if (range[0][0] == 1)
+            addInitialStateWithEntries(new int[]{0,0,0,0,1 == totalLength ? 0 : 1});
+        else
+            addInitialStateWithEntries(new int[]{0,0,0,0,0});
     }
 
     @Override

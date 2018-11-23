@@ -81,8 +81,9 @@ abstract class OstrowskiAutomaton extends Automaton {
         configureInitialStates();
 
         setDeterministic(false);
+
 //        setNumbersToEncoding();
-//        setStateNumbers(getStates());
+
 
         restoreInvariant();
         states.clear();
@@ -179,7 +180,7 @@ abstract class OstrowskiAutomaton extends Automaton {
         int inputSize = input.length;
         int sum = 0;
         int coef = 1;
-        for (int i = 0; i < inputSize; i++) {
+        for (int i = inputSize-1; i >=0; i--) {
             sum += input[i] * coef;
             coef *= maxRange[i]+1;
         }
@@ -244,11 +245,11 @@ abstract class OstrowskiAutomaton extends Automaton {
         }
         s.append("\n");
 
+//        Collection<State> states1 = states.values();
         Set<State> states1 = getStates();
-        State initial = getInitialState();
-        s.append(stateToStringBuilder(initial));
-        for (State state : states1) {
-            if (state.getNumber() == 0) continue;
+        ArrayList<State> statesList = new ArrayList<>(states1);
+        statesList.sort((state,t1) -> t1.getNumber() > state.getNumber() ? -1 : 1);
+        for (State state : statesList) {
             s.append(stateToStringBuilder(state));
         }
         return s;
@@ -262,7 +263,9 @@ abstract class OstrowskiAutomaton extends Automaton {
     private StringBuilder stateToStringBuilder(State s) {
         StringBuilder builder = new StringBuilder();
         builder.append(s.getNumber());builder.append(" "); builder.append(s.isAccept()? 1:0); builder.append("\n");
-        for (Transition transition:s.getTransitions()) {
+        ArrayList<Transition> transitionList = new ArrayList<>(s.getTransitions());
+        transitionList.sort((transition,t1) -> t1.getMin() < transition.getMin() ? -1 : 1);
+        for (Transition transition:transitionList) {
             builder.append(transitionToStringBuilder(transition));
         }
         return builder;
@@ -276,12 +279,16 @@ abstract class OstrowskiAutomaton extends Automaton {
     private StringBuilder transitionToStringBuilder(Transition t) {
         StringBuilder builder = new StringBuilder();
         int num = t.getMax();
-        for (int i: maxRange) {
-            int a = num % (i+1);
+        ArrayList<Integer> input = new ArrayList<>();
+        for (int i = maxRange.length-1;i>=0;i--) {
+            int a = num % (maxRange[i]+1);
+            input.add(0,a);
+            num -= a;
+            num /= (maxRange[i]+1);
+        }
+        for(Integer a:input) {
             builder.append(a);
             builder.append(" ");
-            num -= a;
-            num /= (i+1);
         }
         builder.append("-> ");
         builder.append(t.getDest().getNumber());

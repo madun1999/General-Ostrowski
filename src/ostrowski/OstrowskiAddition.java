@@ -78,7 +78,7 @@ public class OstrowskiAddition {
         Path alg1Path = Paths.get(directory+"/"+name+"Alg1.txt");
         Path alg2Path = Paths.get(directory+"/"+name+"Alg2.txt");
         Path alg3Path = Paths.get(directory+"/"+name+"Alg3.txt");
-        Path recognitionPath = Paths.get(directory + "/" + name + ".txt");
+        Path recognitionPath = Paths.get(directory + "/lsd_" + name + ".txt");
         Path commandPath = Paths.get(directory +"/" + name + "AdditionCommand.txt");
 
         BufferedWriter writer;
@@ -131,9 +131,9 @@ public class OstrowskiAddition {
     private static String buildCommand(String name) {
         return "eval lsd_"
                 + name
-                + "_addition \"Ey (Ex (Ew $"
+                + "_addition \"Ey (Ex (Ew $lsd_"
                 + name
-                + "(a) & $"
+                + "(a) & $lsd_"
                 + name
                 + "(b) & $"
                 + name

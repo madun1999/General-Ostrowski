@@ -84,6 +84,14 @@ public class Alg3Automaton extends OstrowskiAutomaton{
 
     @Override
     boolean checkFinal(int[] entries) {
+        int e1 = 0;
+        if (range[0][0] == 1) {
+            e1 = e1+1 == totalLength ? 0 : e1+1;
+            if (entries[4] != e1) return false;
+            entries = findTransitionDestination(entries,new int[]{0,0},0);
+            if (entries.length == 0) return false;
+        }
+        if (entries[4] != 0) return false;
         return (entries[0] == entries[2]) && (entries[1] == entries[3]);
     }
 
