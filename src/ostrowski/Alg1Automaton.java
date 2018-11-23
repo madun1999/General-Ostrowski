@@ -106,7 +106,7 @@ public class Alg1Automaton extends OstrowskiAutomaton {
     @Override
     boolean checkFinal(int[] entries) {
         int h1 = 0;
-        if (range[0][0] == 1) {
+        if (range[0][1] == 1) {
             h1 = h1+1 == totalLength ? 0 : h1+1;
             if (entries[7] != h1) return false;
             entries = findTransitionDestination(entries,new int[]{0,0},0);

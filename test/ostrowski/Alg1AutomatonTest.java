@@ -8,20 +8,29 @@ public class Alg1AutomatonTest {
 
     @Test
     public void entriesToEncoding() {
-        Alg1Automaton rt2 = new Alg1Automaton(new int[]{2},0);
-
-        int[] stateEntries = {0,1,4,
-                              0,0,2,
+        Alg1Automaton fib = new Alg1Automaton(new int[]{1},0);
+        //Alg1Automaton rt2 = new Alg1Automaton(new int[]{2},0);
+        int[] stateEntries = {0,0,1,
+                              0,0,1,
                               0,0};
-        int expectedEncoding = 544;
+        int expectedEncoding = 18;
 
-        int actualEncoding = rt2.entriesToEncoding(stateEntries);
+        int actualEncoding = fib.entriesToEncoding(stateEntries);
 
         assertEquals(expectedEncoding,actualEncoding);
     }
 
     @Test
     public void checkFinal() {
+        Alg1Automaton fib = new Alg1Automaton(new int[]{1},0);
+        int[] state = {0,0,1,
+                       0,0,1,
+                       0,0};
+
+        boolean expectedFinal = true;
+        boolean actualFinal = fib.checkFinal(state);
+
+        assertEquals(expectedFinal,actualFinal);
     }
 
     @Test

@@ -25,6 +25,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     int[][] range;
 
+    private static boolean DEBUG = false;
     /**
      * The length of the non-repeated part of the range.
      * See class description for more detail.
@@ -82,14 +83,15 @@ abstract class OstrowskiAutomaton extends Automaton {
 
         setDeterministic(false);
 
-//        setNumbersToEncoding();
-
-
-        restoreInvariant();
-        states.clear();
-        determinize();
-        minimize();
-        setInitialStateNumber();
+        if (DEBUG) {
+            setNumbersToEncoding();
+        } else {
+            restoreInvariant();
+            states.clear();
+            determinize();
+            minimize();
+            setInitialStateNumber();
+        }
     }
 
     /**
@@ -245,8 +247,12 @@ abstract class OstrowskiAutomaton extends Automaton {
         }
         s.append("\n");
 
-//        Collection<State> states1 = states.values();
-        Set<State> states1 = getStates();
+        Collection<State> states1;
+        if (DEBUG) {
+            states1 = states.values();
+        } else {
+            states1 = getStates();
+        }
         ArrayList<State> statesList = new ArrayList<>(states1);
         statesList.sort((state,t1) -> t1.getNumber() > state.getNumber() ? -1 : 1);
         for (State state : statesList) {
