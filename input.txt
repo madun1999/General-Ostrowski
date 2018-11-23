@@ -1,6 +1,6 @@
-fib
+rt3
 
-1
+1 2
 
 
 This is the input file. Only the first three lines will be used as input.
