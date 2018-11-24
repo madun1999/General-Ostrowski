@@ -1,6 +1,5 @@
 package ostrowski;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.Exception;
 import java.io.BufferedWriter;
@@ -120,7 +119,7 @@ public class OstrowskiAddition {
             System.out.println("Alg3 written to "+alg3Path.toString());
 
             writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
-            writer.append(rec.generate());
+            writer.append(rec.toStringBuilder());
             writer.close();
             System.out.println("Recognition written to "+recognitionPath.toString());
 
