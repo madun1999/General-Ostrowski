@@ -59,8 +59,8 @@ public class OstrowskiAddition {
         String name = "rt3";
         int[] a = {1,2};
         int nonRepeatLength = 0;
-        int[] aRepeat = {1,2};
-        int[] aNRepeat = {};
+        int[] aRepeat;
+        int[] aNRepeat;
 
         System.out.println("Try reading input from " + inputFileName + " ...\n");
         try (Stream<String> stream = Files.lines(Paths.get(inputFileName))){

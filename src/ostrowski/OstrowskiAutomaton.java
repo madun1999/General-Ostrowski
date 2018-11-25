@@ -25,7 +25,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     final int[][] range;
 
-    static boolean DEBUG = false;
+    static final boolean DEBUG = false;
     /**
      * The length of the non-repeated part of the range.
      * See class description for more detail.

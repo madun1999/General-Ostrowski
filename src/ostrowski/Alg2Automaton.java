@@ -1,7 +1,5 @@
 package ostrowski;
 
-import java.lang.StringBuilder;
-import java.util.ArrayList;
 import java.util.Arrays;
 /**
  * This class is a generator for algorithm 2 of ostrowski addition.
