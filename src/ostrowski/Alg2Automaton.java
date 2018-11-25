@@ -19,13 +19,13 @@ public class Alg2Automaton extends OstrowskiAutomaton{
 
     @Override
     void addAllTransitions() {
-        for (int e = 0; e < totalLength; e++) {
+        for (int e = -2; e < totalLength; e++) {
             int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
             int e2 = e1+1 == totalLength ? nonRepeatLength : e1+1;
-            int dMax = range[e][1];
-            int cMax = range[e1][1];
-            int bMax = range[e][0];
-            int aMax = range[e1][0];
+            int dMax = e < 0 ? 0 : range[e][1];
+            int cMax = e1 < 0 ? 0 : range[e1][1];
+            int bMax = e < 0 ? 0 : range[e][0];
+            int aMax = e1 < 0 ? 0 : range[e1][0];
             for (int a = 0; a <= aMax; a++) {
                 for (int b = 0; b <= bMax; b++) {
                     for (int c = 0; c <= cMax; c++) {
@@ -43,6 +43,11 @@ public class Alg2Automaton extends OstrowskiAutomaton{
      * @param index the index of the input
      */
     private void addTransitionsAtIndex(int[] entries, int index){
+        if (DEBUG){
+            if (entriesToEncoding(entries) == 1) {
+                System.out.println(Arrays.toString(entries)+ index);
+            }
+        }
         int iMax = range[index][0];
         int jMax = range[index][1];
         if (index == 0 && nonRepeatLength != 0) {iMax--;jMax--;}
@@ -55,10 +60,7 @@ public class Alg2Automaton extends OstrowskiAutomaton{
 
     @Override
     void addAllInitialStates() {
-        if (range[0][0] == 1)
-            addInitialStateWithEntries(new int[]{0,0,0,0,1 == totalLength ? 0 : 1});
-        else
-            addInitialStateWithEntries(new int[]{0,0,0,0,0});
+        addInitialStateWithEntries(new int[]{0,0,0,0,range[0][0] == 1 ? -1: -2});
     }
 
     @Override
@@ -68,16 +70,16 @@ public class Alg2Automaton extends OstrowskiAutomaton{
         int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
         result += entries[0];
 
-        result *= range[e][0]+1;
+        result *= e < 0 ? 1 : range[e][0]+1;
         result += entries[1];
 
-        result *= range[e1][0]+1;
+        result *= e1 < 0 ? 1 :range[e1][0]+1;
         result += entries[2];
 
-        result *= range[e][1]+1;
+        result *= e < 0 ? 1 : range[e][1]+1;
         result += entries[3];
 
-        result *= totalLength;
+        result *= totalLength+2;
         result += e;
 
         return result;
@@ -95,7 +97,21 @@ public class Alg2Automaton extends OstrowskiAutomaton{
         int f = transition[0], g = transition[1];
         int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
         int e2 = e1+1 == totalLength ? nonRepeatLength : e1+1;
-
+        if (e < 0) {
+            if (b != 0 || d != 0){
+                System.out.println("Alg2 findTransitionDestinationError: negative index with non-zero entries b,d");
+                System.exit(0);
+            }
+            if (e1 < 0 && (a != 0 || c != 0)){
+                System.out.println("Alg2 findTransitionDestinationError: negative index with non-zero entries a,c");
+                System.exit(0);
+            }
+            if (e2 < 0) {
+                System.out.println("Alg2 findTransitionDestinationError: negative index e2");
+                System.exit(0);
+            }
+            return new int[] {f,a,g,c,e1};
+        }
         int a3 = range[e2][1], a2 = range[e1][1];
 
         if (f<a3 && a==a2 && b>0) {f++;a=0;b--;} //rule for ostrowski.Alg2Automaton

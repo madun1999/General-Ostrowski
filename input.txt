@@ -1,6 +1,6 @@
-test__21
-
-2 1
+test_32_14
+3 2
+1 4
 
 
 This is the input file. Only the first three lines will be used as input.
