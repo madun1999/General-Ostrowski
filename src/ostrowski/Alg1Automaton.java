@@ -105,12 +105,16 @@ public class Alg1Automaton extends OstrowskiAutomaton {
 
     @Override
     boolean checkFinal(int[] entries) {
+        if (DEBUG) {
+            if (entriesToEncoding(entries) == 421) System.out.println(Arrays.toString(entries));
+        }
         int h1 = 0;
         if (range[0][1] == 1) {
             h1 = h1+1 == totalLength ? 0 : h1+1;
             if (entries[7] != h1) return false;
             entries = findTransitionDestination(entries,new int[]{0,0},0);
             if (entries.length == 0) return false;
+            h1 = 0;
         }
         if (entries[7] != 0) return false;
         int a = entries[0], b = entries[1], c = entries[2];
@@ -123,7 +127,7 @@ public class Alg1Automaton extends OstrowskiAutomaton {
         int a3 = range[h3][1], a2 = range[h2][1], a1 = range[h1][1];
 
 
-        if (g == 1) {a--;b+=a1+1;c=0;} //revert A1
+        if (g == 1) {a--;b+=a2+1;c=0;} //revert A1
         if (a<a3&&b>a2&&c==0) {return (a+1 == d) && (b-a2-1 == e) && (f == a1-1);} //B1
 
         if (a<a3 && b>=a2 && c>0 && c<=a1) {return (a+1 == d) && (b-a2 == e) && (f == c-1);} //B2
@@ -138,6 +142,9 @@ public class Alg1Automaton extends OstrowskiAutomaton {
             System.out.println("findTransitionDestination error: indexOfTransition");
             System.exit(0);
         }
+        if (DEBUG) {
+
+        }
         int a = entries[0], b = entries[1], c = entries[2];
         int d = entries[3], e = entries[4], f = entries[5];
         int g = entries[6], h = entries[7];
@@ -145,9 +152,8 @@ public class Alg1Automaton extends OstrowskiAutomaton {
         g = 0;
 
         int h2 = h+1 == totalLength ? nonRepeatLength : h+1;
-        int h3 = h2+1 == totalLength ? nonRepeatLength : h2+1;
 
-        int a3 = range[h3][1], a2 = range[h2][1], a1 = range[h][1];
+        int a3 = range[h2][1], a2 = range[h][1], a1 = range[indexOfTransition][1];
 
         if (b<a3 && c>a2 && i == 0) {b++;c-=a2+1;i=a1-1;g=1;}  //A1
         else if (b<a3 && c>=a2 && c<=2*a2 && i>0) {b++;c-=a2;i--;g=0;} //A2

@@ -23,10 +23,10 @@ public class Alg2Automaton extends OstrowskiAutomaton{
         for (int e = 0; e < totalLength; e++) {
             int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
             int e2 = e1+1 == totalLength ? nonRepeatLength : e1+1;
-            int dMax = range[e1][1];
-            int cMax = range[e][1];
-            int bMax = range[e1][0];
-            int aMax = range[e][0];
+            int dMax = range[e][1];
+            int cMax = range[e1][1];
+            int bMax = range[e][0];
+            int aMax = range[e1][0];
             for (int a = 0; a <= aMax; a++) {
                 for (int b = 0; b <= bMax; b++) {
                     for (int c = 0; c <= cMax; c++) {

@@ -22,10 +22,10 @@ public class Alg3Automaton extends OstrowskiAutomaton{
     void addAllTransitions() {
         for (int e = 0; e < totalLength; e++) {
             int e1 = e+1 == totalLength ? nonRepeatLength : e+1;
-            int dMax = range[e1][1];
-            int cMax = range[e][1];
-            int bMax = range[e1][0];
-            int aMax = range[e][0];
+            int dMax = range[e][1];
+            int cMax = range[e1][1];
+            int bMax = range[e][0];
+            int aMax = range[e1][0];
             for (int a = 0; a <= aMax; a++) {
                 for (int b = 0; b <= bMax; b++) {
                     for (int c = 0; c <= cMax; c++) {
@@ -97,6 +97,9 @@ public class Alg3Automaton extends OstrowskiAutomaton{
 
     @Override
     int[] findTransitionDestination(int[] entries, int[] transition,int index) {
+        if (DEBUG) {
+
+        }
         int a = entries[0], b = entries[1], c = entries[2];
         int d = entries[3], e = entries[4];
         int f = transition[0], g = transition[1];

@@ -25,7 +25,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     int[][] range;
 
-    private static boolean DEBUG = false;
+    static boolean DEBUG = false;
     /**
      * The length of the non-repeated part of the range.
      * See class description for more detail.
@@ -85,6 +85,7 @@ abstract class OstrowskiAutomaton extends Automaton {
 
         if (DEBUG) {
             setNumbersToEncoding();
+            System.out.println(stateToStringBuilder(getInitialState()));
         } else {
             restoreInvariant();
             states.clear();
