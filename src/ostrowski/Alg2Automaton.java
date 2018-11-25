@@ -15,7 +15,8 @@ public class Alg2Automaton extends OstrowskiAutomaton{
      * @param nRLength the nonRepeated part of the range.
      */
     public Alg2Automaton(int[] r, int nRLength) {
-        super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
+        super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength, new int[]{1,1});
+        setDeterministic(true);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class Alg2Automaton extends OstrowskiAutomaton{
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];
+        if (index == 0 && nonRepeatLength != 0) {iMax--;jMax--;}
         for (int i = 0; i <= iMax; i++) {
             for (int j = 0; j <= jMax; j++) {
                 addTransition(entries,new int[]{i,j},index);

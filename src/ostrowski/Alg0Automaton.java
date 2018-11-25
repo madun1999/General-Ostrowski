@@ -23,7 +23,7 @@ import java.util.Arrays;
  * 2 2 -> 0
  *
  */
-public class Alg0Automaton {
+public class Alg0Automaton extends OstrowskiAutomaton {
 
     /**
      * The max of the input.
@@ -34,12 +34,10 @@ public class Alg0Automaton {
      * Constructor.
      * @param r the range of the input.
      */
-    public Alg0Automaton(int[] r) {
-        max = Arrays.stream(r).max().orElse(0);
-        if (max ==0) {
-            System.out.println("Alg0 Error: input max range is 0.");
-            System.exit(0);
-        }
+    public Alg0Automaton(int[] r, int nRLength) {
+        super(Arrays.stream(r).boxed().map(i->new int[]{i}).toArray(int[][]::new), nRLength, new int[]{1});
+        max = Arrays.stream(maxInputRange).max().orElse(0);
+        setDeterministic(true);
     }
 
     /**
@@ -47,6 +45,7 @@ public class Alg0Automaton {
      * Read the class description.
      * @return StringBuilder for the state.
      */
+    @Override
     public StringBuilder toStringBuilder() {
         StringBuilder s = new StringBuilder();
         for (int j = 0; j < 2; j++) {
@@ -84,4 +83,28 @@ public class Alg0Automaton {
         return s;
     }
 
+    @Override
+    void addAllTransitions() {
+
+    }
+
+    @Override
+    void addAllInitialStates() {
+
+    }
+
+    @Override
+    int entriesToEncoding(int[] entries) {
+        return 0;
+    }
+
+    @Override
+    boolean checkFinal(int[] entries) {
+        return false;
+    }
+
+    @Override
+    int[] findTransitionDestination(int[] stateEntries, int[] transition, int transitionPositionIndex) {
+        return new int[0];
+    }
 }

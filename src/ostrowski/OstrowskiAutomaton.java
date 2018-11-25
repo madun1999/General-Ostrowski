@@ -12,9 +12,9 @@ import java.util.*;
  * Explanation for Input range:
  * The range of the input might vary based on the position of the input.
  * For example, in recognition automaton for rt3 Ostrowski numeration system, the first input can range from 0 to 1, the second can range from 0 to 2, the third can range from 0 to 1, etc..
- * In this case, the inputRange would be {{1},{2}}, the maxRange would be {2}, and the repeatBeginIndex would be 0.
+ * In this case, the inputRange would be {{1},{2}}, the maxInputRange would be {2}, and the repeatBeginIndex would be 0.
  * For another example, in algorithm 1 of addition automaton for an Ostrowski numeration system with continuous fraction [5,1,2;3,4] with [3,4] being the repeating part,
- * Then <code> range={{10,5},{2,1},{4,2},{6,3},{8,4}}</code>, <code>nonRepeatLength = 3</code>, <code>totalLength=5</code>, <code>maxRange = {10,5}</code>.
+ * Then <code> range={{10,5},{2,1},{4,2},{6,3},{8,4}}</code>, <code>nonRepeatLength = 3</code>, <code>totalLength=5</code>, <code>maxInputRange = {10,5}</code>.
  * <code>Alg1Automaton({{10,5},{2,1},{4,2},{6,3},{8,4}},3)</code> will construct an instance of said alg1.
  */
 abstract class OstrowskiAutomaton extends Automaton {
@@ -23,7 +23,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      * Least significant digit first.
      * See class description for more detail.
      */
-    int[][] range;
+    final int[][] range;
 
     static boolean DEBUG = false;
     /**
@@ -42,7 +42,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      * The maximum range of each input.
      * See class description for more detail.
      */
-    private int[] maxRange;
+    int[] maxInputRange;
 
     /**
      * A temporary dictionary that maps state encoding to states.
@@ -66,22 +66,21 @@ abstract class OstrowskiAutomaton extends Automaton {
      * @param r range of the input.
      * @param nRLength nonRepeated length of the range.
      */
-    public OstrowskiAutomaton(int[][] r, int nRLength) {
+    public OstrowskiAutomaton(int[][] r, int nRLength, int[] multiplier) {
         range = r; nonRepeatLength = nRLength;
         totalLength = r.length;
-        maxRange = OstrowskiCalculator.maxRange(range);
+        maxInputRange = OstrowskiCalculator.maxRange(range,nRLength,multiplier);
     }
 
     /**
      * Calculate the automaton, ready for output.
      */
     void calculateAutomaton() {
+
         addAllTransitions();
 
         addAllInitialStates();
         configureInitialStates();
-
-        setDeterministic(false);
 
         if (DEBUG) {
             setNumbersToEncoding();
@@ -89,8 +88,11 @@ abstract class OstrowskiAutomaton extends Automaton {
         } else {
             restoreInvariant();
             states.clear();
-            determinize();
+            if (isDeterministic()) {
+                determinize();
+            }
             minimize();
+            restoreInvariant();
             setInitialStateNumber();
         }
     }
@@ -128,8 +130,9 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     private void configureInitialStates() {
         State initState = new State();
-        for(State state:initialStates)
-        initState.addEpsilon(state);
+        for(State state:initialStates) {
+            initState.addEpsilon(state);
+        }
         setInitialState(initState);
         initialStates.clear();
     }
@@ -137,7 +140,7 @@ abstract class OstrowskiAutomaton extends Automaton {
     /**
      * Default constructor. Do nothing.
      */
-    public OstrowskiAutomaton() {}
+    public OstrowskiAutomaton() {range = new int[][]{};}
 
     /**
      * That adds all transitions to the automaton.
@@ -185,7 +188,7 @@ abstract class OstrowskiAutomaton extends Automaton {
         int coef = 1;
         for (int i = inputSize-1; i >=0; i--) {
             sum += input[i] * coef;
-            coef *= maxRange[i]+1;
+            coef *= maxInputRange[i]+1;
         }
         return sum;
     }
@@ -212,6 +215,10 @@ abstract class OstrowskiAutomaton extends Automaton {
      * @param transitionPositionIndex the index of the input.
      */
     public void addTransition(int[] entries, int[] input, int transitionPositionIndex) {
+        if (DEBUG && this instanceof Alg3Automaton && entriesToEncoding(entries)==3 && inputToEncoding(input) == 2 && transitionPositionIndex == 0){
+            System.out.println(Arrays.toString(entries));
+            System.out.println(Arrays.toString(input));
+        }
         State state = getStateWithEntries(entries);
         int[] dest = findTransitionDestination(entries,input,transitionPositionIndex);
         if (dest.length != 0) {
@@ -236,7 +243,7 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     public StringBuilder toStringBuilder() {
         StringBuilder s = new StringBuilder();
-        for (int i:maxRange) {
+        for (int i: maxInputRange) {
             s.append("{");
             for (int j = 0; j < i; j++) {
                 s.append(j);
@@ -285,21 +292,23 @@ abstract class OstrowskiAutomaton extends Automaton {
      */
     private StringBuilder transitionToStringBuilder(Transition t) {
         StringBuilder builder = new StringBuilder();
-        int num = t.getMax();
-        ArrayList<Integer> input = new ArrayList<>();
-        for (int i = maxRange.length-1;i>=0;i--) {
-            int a = num % (maxRange[i]+1);
-            input.add(0,a);
-            num -= a;
-            num /= (maxRange[i]+1);
+        for(int num1 = t.getMin(); num1 <= t.getMax(); num1++) {
+            int num = num1;
+            ArrayList<Integer> input = new ArrayList<>();
+            for (int i = maxInputRange.length - 1; i >= 0; i--) {
+                int a = num % (maxInputRange[i] + 1);
+                input.add(0, a);
+                num -= a;
+                num /= (maxInputRange[i] + 1);
+            }
+            for (Integer a : input) {
+                builder.append(a);
+                builder.append(" ");
+            }
+            builder.append("-> ");
+            builder.append(t.getDest().getNumber());
+            builder.append("\n");
         }
-        for(Integer a:input) {
-            builder.append(a);
-            builder.append(" ");
-        }
-        builder.append("-> ");
-        builder.append(t.getDest().getNumber());
-        builder.append("\n");
         return builder;
     }
 

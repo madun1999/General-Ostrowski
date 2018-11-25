@@ -15,7 +15,8 @@ public class Alg3Automaton extends OstrowskiAutomaton{
      * @param nRLength the nonRepeated part of the range.
      */
     public Alg3Automaton(int[] r, int nRLength) {
-        super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength);
+        super(Arrays.stream(r).boxed().map(i->new int[]{i,i}).toArray(int[][]::new), nRLength, new int[]{1,1});
+        setDeterministic(r.length == 1);
     }
 
     @Override
@@ -44,8 +45,10 @@ public class Alg3Automaton extends OstrowskiAutomaton{
      * @param index the index of the input
      */
     private void addTransitionsAtIndex(int[] entries, int index){
+
         int iMax = range[index][0];
         int jMax = range[index][1];
+        if (index == 0 && nonRepeatLength != 0) {iMax--;jMax--;}
         for (int i = 0; i <= iMax; i++) {
             for (int j = 0; j <= jMax; j++) {
                 addTransition(entries,new int[]{i,j},index);
@@ -84,6 +87,11 @@ public class Alg3Automaton extends OstrowskiAutomaton{
 
     @Override
     boolean checkFinal(int[] entries) {
+        if (DEBUG) {
+            if (entriesToEncoding(entries) == 14) {
+                System.out.println(Arrays.toString(entries));
+            }
+        }
         int e1 = 0;
         if (range[0][0] == 1) {
             e1 = e1+1 == totalLength ? 0 : e1+1;

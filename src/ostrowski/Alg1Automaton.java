@@ -1,6 +1,6 @@
 package ostrowski;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 
 /**
@@ -15,7 +15,8 @@ public class Alg1Automaton extends OstrowskiAutomaton {
      * @param nRLength the nonRepeated part of the range.
      */
     public Alg1Automaton(int[] r, int nRLength) {
-        super(Arrays.stream(r).boxed().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength);
+        super(Arrays.stream(r).boxed().map(i->new int[]{i*2,i}).toArray(int[][]::new), nRLength, new int[]{2,1});
+        setDeterministic(r.length == 1);
     }
 
 
@@ -57,6 +58,7 @@ public class Alg1Automaton extends OstrowskiAutomaton {
     private void addTransitionsAtIndex(int[] entries, int index){
         int iMax = range[index][0];
         int jMax = range[index][1];
+        if (index == 0 && nonRepeatLength != 0) {iMax-=2;jMax--;}
         for (int i = 0; i <= iMax; i++) {
             for (int j = 0; j <= jMax; j++) {
                 addTransition(entries, new int[]{i,j}, index);
@@ -106,7 +108,7 @@ public class Alg1Automaton extends OstrowskiAutomaton {
     @Override
     boolean checkFinal(int[] entries) {
         if (DEBUG) {
-            if (entriesToEncoding(entries) == 421) System.out.println(Arrays.toString(entries));
+            if (entriesToEncoding(entries) == 4037) System.out.println(Arrays.toString(entries));
         }
         int h1 = 0;
         if (range[0][1] == 1) {

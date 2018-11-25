@@ -70,11 +70,11 @@ public class OstrowskiAddition {
 
 
 
-        Alg0Automaton alg0 = new Alg0Automaton(a);
+        Alg0Automaton alg0 = new Alg0Automaton(a,nonRepeatLength);
         Alg1Automaton alg1 = new Alg1Automaton(a,nonRepeatLength);
         Alg2Automaton alg2 = new Alg2Automaton(a,nonRepeatLength);
         Alg3Automaton alg3 = new Alg3Automaton(a,nonRepeatLength);
-        Recognition rec = new Recognition(aNRepeat,aRepeat);
+        RecognitionAutomaton rec = new RecognitionAutomaton(a,nonRepeatLength);
 
         String directory = System.getProperty("user.dir") + "/output/" + name;
         Path path = Paths.get(directory);
@@ -119,9 +119,10 @@ public class OstrowskiAddition {
             System.out.println("Alg3 written to "+alg3Path.toString());
 
             writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
+            rec.calculateAutomaton();
             writer.append(rec.toStringBuilder());
             writer.close();
-            System.out.println("Recognition written to "+recognitionPath.toString());
+            System.out.println("RecognitionAutomaton written to "+recognitionPath.toString());
 
             writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
             writer.append(buildCommand(name));
