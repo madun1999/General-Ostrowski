@@ -33,8 +33,28 @@ public class OstrowskiAddition {
      */
     public static void main(String[] args) {
         String inputFileName = "input.txt";
-        if (args.length == 0) System.out.println("No input file name given.");
-        else inputFileName = args[0].trim();
+        boolean verifyMode = false;
+        if (args.length == 0) {
+            System.out.println("No input file name given.");
+        }
+        else if (args[0].startsWith("-")) {
+            if (args[0].equals("-verify")) {
+                verifyMode = true;
+                if (args.length >= 2) {
+                    inputFileName = args[0].trim();
+                } else {
+                    System.out.println("No input file name given.");
+                }
+            } else {
+                System.out.println("No such option: " + args[0]);
+                System.exit(0);
+            }
+        } else {
+            inputFileName = args[0].trim();
+        }
+
+        if (verifyMode) System.out.println("Verify mode.");
+        System.out.println();
 
         String name = "rt3";
         int[] a = {1,2};
@@ -42,7 +62,7 @@ public class OstrowskiAddition {
         int[] aRepeat = {1,2};
         int[] aNRepeat = {};
 
-        System.out.println("Try reading input from " + inputFileName + " ...");
+        System.out.println("Try reading input from " + inputFileName + " ...\n");
         try (Stream<String> stream = Files.lines(Paths.get(inputFileName))){
             String[] lines = stream.toArray(String[]::new);
             if (lines.length >= 3) {
@@ -99,35 +119,41 @@ public class OstrowskiAddition {
             writer.append(alg0.toStringBuilder());
             writer.close();
             System.out.println("Alg0 written to "+alg0Path.toString());
+            System.out.println();
 
             writer = Files.newBufferedWriter(alg1Path, StandardCharsets.UTF_16);
             alg1.calculateAutomaton();
             writer.append(alg1.toStringBuilder());
             writer.close();
             System.out.println("Alg1 written to "+alg1Path.toString());
+            System.out.println();
 
             writer = Files.newBufferedWriter(alg2Path, StandardCharsets.UTF_16);
             alg2.calculateAutomaton();
             writer.append(alg2.toStringBuilder());
             writer.close();
             System.out.println("Alg2 written to "+alg2Path.toString());
+            System.out.println();
 
             writer = Files.newBufferedWriter(alg3Path, StandardCharsets.UTF_16);
             alg3.calculateAutomaton();
             writer.append(alg3.toStringBuilder());
             writer.close();
             System.out.println("Alg3 written to "+alg3Path.toString());
+            System.out.println();
 
             writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
             rec.calculateAutomaton();
             writer.append(rec.toStringBuilder());
             writer.close();
             System.out.println("RecognitionAutomaton written to "+recognitionPath.toString());
+            System.out.println();
 
             writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
-            writer.append(buildCommand(name));
+            writer.append(buildCommand(name, verifyMode));
             writer.close();
             System.out.println("Walnut command written to "+commandPath.toString());
+            System.out.println();
 
         }
         catch(Exception e){e.printStackTrace();}
@@ -139,7 +165,19 @@ public class OstrowskiAddition {
      * @param name the name of the numeration system.
      * @return the command for Walnut.
      */
-    private static String buildCommand(String name) {
+    private static String buildCommand(String name, boolean verifyMode) {
+        String verify = "";
+        if (verifyMode) {
+            verify += "eval verify_testAdd0 \"Ax Ay Az (($lsd_test(x) & $lsd_test(y) & $lsd_test_addition(x,y,z)) => $lsd_test(z))\":\n" +
+                    "eval verify_testAdd1 \"Ax,y($endIn3Zeros(x) & $endIn3Zeros(y) & $lsd_test(x) & $lsd_test(y) => (Ez $lsd_test_addition(x,y,z)))\":\n" +
+                    "eval verify_testAdd2 \"Ax,y,z,w $lsd_test_addition(x,y,z) & $lsd_test_addition(x,y,w) => $same(z,w)\":\n" +
+                    "eval verify_testAdd3 \"Ax,y,z,r,s,t $lsd_test_addition(x,y,r)&$lsd_test_addition(r,z,t)&$lsd_test_addition(y,z,s) => $lsd_test_addition(x,s,t)\":\n" +
+                    "eval verify_testAdd4 \"Ax,y,z $zero(y) => ($lsd_test_addition(x,y,z) <=> ($same(x,z) & $lsd_test(x)))\":\n" +
+                    "eval verify_testAdd5 \"Ax,y,o $one(o) & $endIn3Zeros(x) & $lsd_test_addition(x,o,y) => ($less(x,y) & ~(Ez $lsd_test(z) & $less(x,z) & $less(z,y)))\":\n" +
+                    "\n" +
+                    "exit;";
+            verify = verify.replaceAll("test",name);
+        }
         return "eval lsd_"
                 + name
                 + "_addition \"Ey (Ex (Ew $lsd_"
@@ -154,7 +192,8 @@ public class OstrowskiAddition {
                 + name
                 + "Alg2(x,y)) & `$"
                 + name
-                + "Alg3(y,c)\":";
+                + "Alg3(y,c)\":"
+                + verify;
     }
 
 }
