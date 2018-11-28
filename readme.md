@@ -34,3 +34,17 @@ Then, 6 files representing the the five automata and a Walnut command file can b
 Note: The output files are in UTF-16 encoding, which is required by Walnut. Depending on the text editor, the file might look a little bit weird, but it is normal.
 
 Finally, a Walnut command can be found in "\<name\>AdditionCommand.txt". Put all the automaton files into the "/Automata Library" folder of Walnut and run the command for the addition automaton.
+
+## Issues
+
+### Verifying With Constants
+This program is not fully tested. To test if the output automata is correct, we recommend checking a few constants before using it.
+
+Use the following command to generate Walnut commands for constants.
+
+```java -jar Automaton_Producer.jar -verifyConstants <input_file_name>```
+
+The command for constants will appear in "\<name\>AdditionCommand.txt" below the command for building addition automaton.
+
+### Issue reporting
+If the resulting addition automaton is not correct, please create an issue. Please include the continued fraction of the quadratic number, the description of the issue, and related files. 
