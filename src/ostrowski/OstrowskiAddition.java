@@ -38,7 +38,7 @@ public class OstrowskiAddition {
             System.out.println("No input file name given.");
         }
         else if (args[0].startsWith("-")) {
-            if (args[0].equals("-verify")) {
+            if (args[0].equals("-verifyConstants")) {
                 verifyMode = true;
                 if (args.length >= 2) {
                     inputFileName = args[0].trim();
@@ -168,14 +168,14 @@ public class OstrowskiAddition {
     private static String buildCommand(String name, boolean verifyMode) {
         String verify = "";
         if (verifyMode) {
-            verify += "eval verify_testAdd0 \"Ax Ay Az (($lsd_test(x) & $lsd_test(y) & $lsd_test_addition(x,y,z)) => $lsd_test(z))\":\n" +
-                    "eval verify_testAdd1 \"Ax,y($endIn3Zeros(x) & $endIn3Zeros(y) & $lsd_test(x) & $lsd_test(y) => (Ez $lsd_test_addition(x,y,z)))\":\n" +
-                    "eval verify_testAdd2 \"Ax,y,z,w $lsd_test_addition(x,y,z) & $lsd_test_addition(x,y,w) => $same(z,w)\":\n" +
-                    "eval verify_testAdd3 \"Ax,y,z,r,s,t $lsd_test_addition(x,y,r)&$lsd_test_addition(r,z,t)&$lsd_test_addition(y,z,s) => $lsd_test_addition(x,s,t)\":\n" +
-                    "eval verify_testAdd4 \"Ax,y,z $zero(y) => ($lsd_test_addition(x,y,z) <=> ($same(x,z) & $lsd_test(x)))\":\n" +
-                    "eval verify_testAdd5 \"Ax,y,o $one(o) & $endIn3Zeros(x) & $lsd_test_addition(x,o,y) => ($less(x,y) & ~(Ez $lsd_test(z) & $less(x,z) & $less(z,y)))\":\n" +
-                    "\n" +
-                    "exit;";
+            verify += "eval lsd_test_2 \"?lsd_test a=2\":\n" +
+                    "eval lsd_test_4 \"?lsd_test a=4\":\n" +
+                    "eval lsd_test_8 \"?lsd_test a=8\":\n" +
+                    "eval lsd_test_16 \"?lsd_test a=16\":\n" +
+                    "eval lsd_test_32 \"?lsd_test a=32\":\n" +
+                    "eval lsd_test_64 \"?lsd_test a=64\":\n" +
+                    "eval lsd_test_128 \"?lsd_test a=128\":\n" +
+                    "eval lsd_test_1023 \"?lsd_test a=1023\":";
             verify = verify.replaceAll("test",name);
         }
         return "eval lsd_"
@@ -193,6 +193,7 @@ public class OstrowskiAddition {
                 + "Alg2(x,y)) & `$"
                 + name
                 + "Alg3(y,c)\":"
+                + "\n\n"
                 + verify;
     }
 
