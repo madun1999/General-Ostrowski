@@ -35,7 +35,7 @@ Note: The output files are in UTF-16 encoding, which is required by Walnut. Depe
 
 Finally, a Walnut command can be found in "\<name\>AdditionCommand.txt". Put all the automaton files into the "/Automata Library" folder of Walnut and run the command for the addition automaton.
 ### Note
-In `a`-Ostrowski numeration system, if the continued fraction of `a` starts with a `1`, then the least significant digit of any number will be `0`. Since Walnut requires number 1 to be exactly `10*`, the output of this program will ommit the `0` in the least significant digit. 
+In `a`-Ostrowski numeration system, if the continued fraction of `a` starts with a `1`, then the least significant digit of any number will be `0`. Since Walnut requires integer 1 to be exactly `10*`, the output of this program will ommit the `0` in the least significant digit. 
 
 ## Issues
 
