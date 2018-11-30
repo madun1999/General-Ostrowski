@@ -34,6 +34,8 @@ Then, 6 files representing the the five automata and a Walnut command file can b
 Note: The output files are in UTF-16 encoding, which is required by Walnut. Depending on the text editor, the file might look a little bit weird, but it is normal.
 
 Finally, a Walnut command can be found in "\<name\>AdditionCommand.txt". Put all the automaton files into the "/Automata Library" folder of Walnut and run the command for the addition automaton.
+### Note
+In `a`-Ostrowski numeration system, if the continued fraction of `a` starts with a `1`, then the least significant digit of any number will be `0`. Since Walnut requires integer 1 to be exactly `10*` in lsd or `0*1` in msd, the output of this program will ommit the `0` in the least significant digit. 
 
 ## Issues
 
