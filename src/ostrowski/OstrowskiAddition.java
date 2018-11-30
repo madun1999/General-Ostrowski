@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -32,6 +33,7 @@ public class OstrowskiAddition {
      * @param args First argument is the name of the input file. Default "input.txt".
      */
     public static void main(String[] args) {
+        long beginTime = System.nanoTime();
         String inputFileName = "input.txt";
         boolean verifyMode = false;
         if (args.length == 0) {
@@ -104,7 +106,9 @@ public class OstrowskiAddition {
         Path alg3Path = Paths.get(directory+"/"+name+"Alg3.txt");
         Path recognitionPath = Paths.get(directory + "/lsd_" + name + ".txt");
         Path commandPath = Paths.get(directory +"/" + name + "AdditionCommand.txt");
-
+        Path logPath = Paths.get(directory +"/" + name + "log.txt");
+        long startTime;
+        long endTime;
         BufferedWriter writer;
         try{
             if (!Files.exists(path)) Files.createDirectory(path);
@@ -114,40 +118,57 @@ public class OstrowskiAddition {
             if (Files.exists(alg3Path)) Files.delete(alg3Path);
             if (Files.exists(recognitionPath)) Files.delete(recognitionPath);
             if (Files.exists(commandPath)) Files.delete(commandPath);
+            if (Files.exists(logPath)) Files.delete(logPath);
+
 
             writer = Files.newBufferedWriter(alg0Path, StandardCharsets.UTF_16);
+            startTime = System.nanoTime();
             writer.append(alg0.toStringBuilder());
+            endTime = System.nanoTime();
             writer.close();
             System.out.println("Alg0 written to "+alg0Path.toString());
             System.out.println();
+            long alg0Time = endTime-startTime;
 
             writer = Files.newBufferedWriter(alg1Path, StandardCharsets.UTF_16);
+            startTime = System.nanoTime();
             alg1.calculateAutomaton();
             writer.append(alg1.toStringBuilder());
+            endTime = System.nanoTime();
             writer.close();
             System.out.println("Alg1 written to "+alg1Path.toString());
             System.out.println();
+            long alg1Time = endTime-startTime;
 
             writer = Files.newBufferedWriter(alg2Path, StandardCharsets.UTF_16);
+            startTime = System.nanoTime();
             alg2.calculateAutomaton();
             writer.append(alg2.toStringBuilder());
+            endTime = System.nanoTime();
             writer.close();
             System.out.println("Alg2 written to "+alg2Path.toString());
             System.out.println();
+            long alg2Time = endTime-startTime;
 
             writer = Files.newBufferedWriter(alg3Path, StandardCharsets.UTF_16);
+            startTime = System.nanoTime();
             alg3.calculateAutomaton();
             writer.append(alg3.toStringBuilder());
+            endTime = System.nanoTime();
             writer.close();
             System.out.println("Alg3 written to "+alg3Path.toString());
             System.out.println();
+            long alg3Time = endTime-startTime;
 
             writer = Files.newBufferedWriter(recognitionPath, StandardCharsets.UTF_16);
+            startTime = System.nanoTime();
             rec.calculateAutomaton();
             writer.append(rec.toStringBuilder());
+            endTime = System.nanoTime();
             writer.close();
             System.out.println("RecognitionAutomaton written to "+recognitionPath.toString());
             System.out.println();
+            long recTime = endTime-startTime;
 
             writer = Files.newBufferedWriter(commandPath, StandardCharsets.UTF_16);
             writer.append(buildCommand(name, verifyMode));
@@ -155,11 +176,27 @@ public class OstrowskiAddition {
             System.out.println("Walnut command written to "+commandPath.toString());
             System.out.println();
 
+            writer = Files.newBufferedWriter(logPath, StandardCharsets.UTF_16);
+            writer.append(buildTime(alg0Time,alg1Time,alg2Time,alg3Time,recTime, beginTime));
+            writer.close();
+            System.out.println("Log written to "+logPath.toString());
+            System.out.println();
+
         }
         catch(Exception e){e.printStackTrace();}
 
     }
 
+    private static String buildTime(long alg0, long alg1, long alg2, long alg3, long rec, long begin){
+        DecimalFormat df = new DecimalFormat("#.##");
+        long totalTime = System.nanoTime()-begin;
+        return "Alg0 time: "+df.format(alg0*0.001)+" \u00B5s\n" +
+                "Alg1 time: "+df.format(alg1*0.000001)+" ms\n" +
+                "Alg2 time: "+df.format(alg2*0.000001)+" ms\n" +
+                "Alg3 time: "+df.format(alg3*0.000001)+" ms\n" +
+                "Recognition time: "+df.format(rec*0.000001)+" ms\n" +
+                "Total time: "+df.format((totalTime)*0.000001)+" ms";
+    }
     /**
      * Helper function to calculate the command for Walnut.
      * @param name the name of the numeration system.
