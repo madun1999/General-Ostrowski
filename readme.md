@@ -1,5 +1,5 @@
 # General Ostrowski Addition Automaton
-This program produces Algorithms 0,1,2, and 3 of addition automaton, and recognition automaton for any Ostrowski numeration system, which can then be used to produce the full addition automaton in Walnut.
+This program produces Algorithms 0,1,2, and 3 of addition automaton, and recognition automaton for any Ostrowski numeration system given the continued fraction of the quadratic irrational number, which can then be used to produce the full addition automaton in Walnut.
 
 ## Getting Started
 These instructions will help you use the program.
