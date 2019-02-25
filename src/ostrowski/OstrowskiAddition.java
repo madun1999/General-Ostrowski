@@ -205,14 +205,11 @@ public class OstrowskiAddition {
     private static String buildCommand(String name, boolean verifyMode) {
         String verify = "";
         if (verifyMode) {
-            verify += "eval lsd_test_2 \"?lsd_test a=2\":\n" +
-                    "eval lsd_test_4 \"?lsd_test a=4\":\n" +
-                    "eval lsd_test_8 \"?lsd_test a=8\":\n" +
-                    "eval lsd_test_16 \"?lsd_test a=16\":\n" +
-                    "eval lsd_test_32 \"?lsd_test a=32\":\n" +
-                    "eval lsd_test_64 \"?lsd_test a=64\":\n" +
-                    "eval lsd_test_128 \"?lsd_test a=128\":\n" +
-                    "eval lsd_test_1023 \"?lsd_test a=1023\":";
+            verify += "def lsd_test_successor \"?lsd_test x < y & (Az (z <= x) | (z >= y))\":\n" +
+                    "\n" +
+                    "eval lsd_test_base_proof \"?lsd_test Ax,z ((x + 0 = z) <=> (x = z))\":\n" +
+                    "\n" +
+                    "eval lsd_test_inductive_proof \"?lsd_test Ax,y,z,u,v ($lsd_test_successor(y, u) & $lsd_test_successor(z, v)) => ((x + y = z) <=> (x + u = v))\":";
             verify = verify.replaceAll("test",name);
         }
         return "eval lsd_"

@@ -6,24 +6,24 @@ import java.util.ArrayList;
 public class TimeTrial {
     public static void main(String[] unused){
         ArrayList<Integer> start = new ArrayList<>();
-        ArrayList<Long> timelist = new ArrayList<>();
+        ArrayList<Long> timeList = new ArrayList<>();
         start.add(2);start.add(1);start.add(1);
         long startTime;
         long endTime;
         long totalTime;
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 30; j++) {
             totalTime = 0;
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 1; i++) {
                 startTime = System.nanoTime();
                 run(start.stream().mapToInt(integer -> integer).toArray(), 0);
                 endTime = System.nanoTime();
                 totalTime += endTime-startTime;
-                printScale((j*100+i)/1000.0);
+                printScale((j)/30.0);
             }
-            timelist.add(totalTime/10/1000000);
+            timeList.add(totalTime/10/1000000);
             start.add(2);start.add(1);
         }
-        System.out.println(timelist);
+        System.out.println("\n"+timeList);
     }
     private static void run(int[] a, int npLength) {
         Alg0Automaton alg0 = new Alg0Automaton(a,npLength);
@@ -43,7 +43,7 @@ public class TimeTrial {
         rec.toStringBuilder();
     }
     private static void printScale(double a) {
-        if (a == 1) {System.out.println("Finished!"); return;}
+        if (a == 1) {System.out.println("\rFinished!"); return;}
         double percentage = a;
         StringBuilder bar = new StringBuilder().append("\rTime Trial Progress: |");
         for (int i = 0; i < percentage*40; i++) {

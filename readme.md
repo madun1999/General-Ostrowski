@@ -42,11 +42,11 @@ In `a`-Ostrowski numeration system, if the continued fraction of `a` starts with
 ### Verifying With Constants
 This program is not fully tested. To test if the output automata is correct, we recommend checking a few constants before using it.
 
-Use the following command to generate Walnut commands for constants.
+Use the following command to generate Walnut commands for verifying the automata generated.
 
 ```java -jar Automaton_Producer.jar -verifyConstants <input_file_name>```
 
-The command for constants will appear in "\<name\>AdditionCommand.txt" below the command for building addition automaton.
+The verification command will appear in "\<name\>AdditionCommand.txt" below the command for building addition automaton.
 
 ### Issue reporting
 If the resulting addition automaton is not correct, please create an issue. Please include the continued fraction of the quadratic number, the description of the issue, and related files. 
